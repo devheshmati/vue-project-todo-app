@@ -9,7 +9,13 @@ validation | vee-validate // lazy loading
 
 <script setup></script>
 
-<template></template>
+<template>
+  <div>
+    <RouterLink to="/">Home</RouterLink>
+    <RouterLink to="/login">Login</RouterLink>
+    <RouterLink to="/register">Register</RouterLink>
+  </div>
+  <RouterView />
+</template>
 
 <style></style>
-

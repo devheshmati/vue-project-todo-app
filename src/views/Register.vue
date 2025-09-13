@@ -1,9 +1,7 @@
-<script>
-export default {};
-</script>
+<script setup></script>
 
 <template>
-  <div></div>
+  <h1>This is Register page</h1>
 </template>
 
-<style lang=""></style>
+<style></style>
