@@ -10,8 +10,8 @@ validation | vee-validate // lazy loading
 <script setup></script>
 
 <template>
-  <header class="bg-red-400">
-    <nav class="text-white bg-green-400 grid grid-cols-3">
+  <header class="">
+    <nav class="text-white grid grid-cols-3">
       <RouterLink
         class="py-2 px-4 bg-gray-800 flex justify-center items-center hover:bg-gray-600"
         to="/"
