@@ -1,0 +1,15 @@
+{
+    "name": "womoboy/backend",
+    "autoload": {
+        "psr-4": {
+            "Womoboy\\Backend\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "devheshmati",
+            "email": "reza2boyce@gmail.com"
+        }
+    ],
+    "require": {}
+}
