@@ -1,7 +1,11 @@
-<script setup></script>
+<script setup>
+import TestAnimationComponent from "../components/TestAnimation.vue";
+</script>
 
 <template>
-  <div></div>
+  <div>
+    <TestAnimationComponent />
+  </div>
 </template>
 
 <style scoped></style>
