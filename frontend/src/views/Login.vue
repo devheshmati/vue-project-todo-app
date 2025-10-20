@@ -67,7 +67,7 @@ function handleLogin() {
       </p>
       <p class="mt-4 text-center text-sm text-gray-600">
         Go Home.
-        <router-link to="/register" class="text-blue-500 hover:underline">
+        <router-link to="/" class="text-blue-500 hover:underline">
           Home
         </router-link>
       </p>
