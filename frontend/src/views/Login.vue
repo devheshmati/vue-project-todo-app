@@ -1,7 +1,76 @@
-<script setup></script>
+<script>
+// Define the component name
+export default {
+  name: "Login",
+};
+</script>
+
+<script setup>
+import { ref } from "vue";
+
+const email = ref("");
+const password = ref("");
+
+function handleLogin() {
+  // TODO: Add backend request logic here later
+  if (import.meta.env.DEV) {
+    console.log("Email:", email.value, "Password:", password.value);
+  }
+}
+</script>
 
 <template>
-  <h1>This is Login page</h1>
+  <div class="min-h-screen flex items-center justify-center bg-gray-100">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+      <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">
+        Log in to Your Account
+      </h2>
+      <form @submit.prevent="handleLogin">
+        <div class="mb-4">
+          <label for="email" class="block text-sm font-medium text-gray-700">
+            Email
+          </label>
+          <input
+            type="email"
+            id="email"
+            v-model.trim="email"
+            class="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter your email"
+            required
+          />
+        </div>
+        <div class="mb-6">
+          <label for="password" class="block text-sm font-medium text-gray-700">
+            Password
+          </label>
+          <input
+            type="password"
+            id="password"
+            v-model.trim="password"
+            class="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter your password"
+            required
+          />
+        </div>
+        <button
+          type="submit"
+          class="w-full bg-cyan-600 text-white py-2 rounded-lg hover:bg-cyan-700 transition duration-300"
+        >
+          Log In
+        </button>
+      </form>
+      <p class="mt-4 text-center text-sm text-gray-600">
+        Don't have an account?
+        <router-link to="/register" class="text-blue-500 hover:underline">
+          Sign Up
+        </router-link>
+      </p>
+      <p class="mt-4 text-center text-sm text-gray-600">
+        Go Home.
+        <router-link to="/register" class="text-blue-500 hover:underline">
+          Home
+        </router-link>
+      </p>
+    </div>
+  </div>
 </template>
-
-<style></style>
