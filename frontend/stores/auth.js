@@ -18,6 +18,7 @@ export const useAuthStore = defineStore("auth", () => {
       localStorage.setItem("auth_token", userToken.value);
       router.push("/todos");
     } else {
+      // turn back to the last route
       router.back();
     }
   }
