@@ -7,19 +7,38 @@ export const useAuthStore = defineStore("auth", () => {
   const userToken = ref("");
   const baseUrl = "http://localhost:8000/api";
   const router = useRouter();
+  const errorMessage = ref("");
+  const isLoading = ref(false);
 
   // Handle User Login
   async function login(credentials) {
+    isLoading.value = true;
+    errorMessage.value = "";
     const url = `${baseUrl}/login`;
-    const response = await axios.post(url, credentials);
 
-    if (response.status === 200 && response) {
-      userToken.value = response.data.token;
-      localStorage.setItem("auth_token", userToken.value);
-      router.push("/todos");
-    } else {
-      // turn back to the last route
-      router.back();
+    try {
+      const response = await axios.post(url, credentials);
+
+      if (response.status === 200) {
+        userToken.value = response.data.token;
+        localStorage.setItem("auth_token", userToken.value);
+        router.push("/todos");
+      } else {
+        errorMessage.value = "An Unexpected login error occured.";
+        throw new Error(errorMessage);
+      }
+    } catch (error) {
+      console.log("Login Error.", error.message);
+      errorMessage.value =
+        error.response.data.message ||
+        "Validation failed. Please check your inputs.";
+
+      router.push({
+        path: "/login",
+        props: { message: "Validation Failed!" },
+      });
+    } finally {
+      isLoading.value = false;
     }
   }
 
@@ -42,5 +61,5 @@ export const useAuthStore = defineStore("auth", () => {
     router.push("/");
   }
 
-  return { userToken, login, checkAuth, logOut };
+  return { userToken, errorMessage, isLoading, login, checkAuth, logOut };
 });
