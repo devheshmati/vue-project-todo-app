@@ -5,20 +5,23 @@ export default {
 </script>
 
 <script setup>
-import { computed } from "vue";
 import { useRouter } from "vue-router";
+import { ref, onMounted } from "vue";
+import { useAuthStore } from "/stores/auth";
 
 const router = useRouter();
+const isAuthenticate = ref(false);
+const authStore = useAuthStore();
 
-// computed property
-const isAuthenticated = computed(() => {
-  return false;
+onMounted(() => {
+  // check user authenticate or not
+  isAuthenticate.value = authStore.checkAuth();
 });
 
 // methods
 const logout = () => {
-  console.log("Logging out");
   router.push("/login");
+  authStore.logOut();
 };
 </script>
 
@@ -35,28 +38,28 @@ const logout = () => {
       </div>
       <nav>
         <ul class="flex space-x-6">
-          <li v-if="!isAuthenticated">
+          <li v-if="!isAuthenticate">
             <router-link
               to="/login"
               class="hover:text-gray-200 transition duration-200"
               >Login</router-link
             >
           </li>
-          <li v-if="!isAuthenticated">
+          <li v-if="!isAuthenticate">
             <router-link
               to="/register"
               class="hover:text-gray-200 transition duration-200"
               >Register</router-link
             >
           </li>
-          <li v-if="isAuthenticated">
+          <li v-if="isAuthenticate">
             <router-link
-              to="/home"
+              to="/"
               class="hover:text-gray-200 transition duration-200"
               >Home</router-link
             >
           </li>
-          <li v-if="isAuthenticated">
+          <li v-if="isAuthenticate">
             <button
               @click="logout"
               class="hover:text-gray-200 transition duration-200"

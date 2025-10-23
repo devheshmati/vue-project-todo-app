@@ -1,20 +1,34 @@
 <script>
 // Define the component name
 export default {
-  name: "Login",
+  name: "Login Page",
 };
 </script>
 
 <script setup>
 import { ref } from "vue";
+import axios from "axios";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "/stores/auth";
 
-const email = ref("");
-const password = ref("");
+const router = useRouter();
+const credentials = ref({
+  email: "",
+  password: "",
+});
+const isLoading = ref(true);
+const errorMessage = ref("");
+const authStore = useAuthStore();
 
-function handleLogin() {
-  // TODO: Add backend request logic here later
-  if (import.meta.env.DEV) {
-    console.log("Email:", email.value, "Password:", password.value);
+async function handleLogin() {
+  errorMessage.value = "";
+
+  try {
+    authStore.login(credentials.value);
+  } catch (error) {
+    if (error.message) {
+      console.log(error.message);
+    }
   }
 }
 </script>
@@ -26,6 +40,9 @@ function handleLogin() {
         Log in to Your Account
       </h2>
       <form @submit.prevent="handleLogin">
+        <div class="mb-4 text-red-400">
+          <p v-if="errorMessage">{{ errorMessage }}</p>
+        </div>
         <div class="mb-4">
           <label for="email" class="block text-sm font-medium text-gray-700">
             Email
@@ -33,7 +50,7 @@ function handleLogin() {
           <input
             type="email"
             id="email"
-            v-model.trim="email"
+            v-model.trim="credentials.email"
             class="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter your email"
             required
@@ -46,7 +63,7 @@ function handleLogin() {
           <input
             type="password"
             id="password"
-            v-model.trim="password"
+            v-model.trim="credentials.password"
             class="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter your password"
             required

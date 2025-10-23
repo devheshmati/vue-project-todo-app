@@ -1,43 +1,59 @@
 <script>
 // Define the component name
 export default {
-  name: "Register",
+  name: "Register Page",
 };
 </script>
 
 <script setup>
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
+import axios from "axios";
 
 const router = useRouter();
 
+const name = ref("");
 const email = ref("");
 const password = ref("");
 const confirmPassword = ref("");
+const isLoading = ref(false);
+const errorMessage = ref("");
 
 // Computed property to check if passwords match
 const passwordsMatch = computed(() => {
   return password.value === confirmPassword.value;
 });
 
-function handleRegister() {
-  if (!passwordsMatch.value) {
-    if (import.meta.env.DEV) {
-      console.log("Error: Passwords do not match");
+async function handleRegister() {
+  if (!passwordsMatch.value) return;
+
+  isLoading.value = true;
+  errorMessage.value = "";
+
+  try {
+    const url = "http://localhost:8000/api/register";
+    const response = await axios.post(url, {
+      name: name.value,
+      email: email.value,
+      password: password.value,
+      password_confirmation: confirmPassword.value,
+    });
+
+    if (response.status === 201) {
+      router.push("/login");
+
+      // i think some action should be happend here
     }
-    return;
+  } catch (error) {
+    if (error.responses) {
+      errorMessage.value =
+        error.response.data.message || "Registration failed. Please try again";
+    } else {
+      errorMessage.value = "Network error. Please check your connection.";
+    }
+  } finally {
+    isLoading.value = false;
   }
-  // TODO: Add backend request logic here later
-  if (import.meta.env.DEV) {
-    console.log(
-      "Registering with Email:",
-      email.value,
-      "Password:",
-      password.value,
-    );
-  }
-  // Navigate to login page after successful registration (placeholder)
-  router.push("/login");
 }
 </script>
 
@@ -48,6 +64,19 @@ function handleRegister() {
         Create Your Account
       </h2>
       <form @submit.prevent="handleRegister">
+        <div class="mb-4">
+          <label for="name" class="block text-sm font-medium text-gray-700">
+            Email
+          </label>
+          <input
+            type="text"
+            id="name"
+            v-model.trim="name"
+            class="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter your name"
+            required
+          />
+        </div>
         <div class="mb-4">
           <label for="email" class="block text-sm font-medium text-gray-700">
             Email
