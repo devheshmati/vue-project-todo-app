@@ -66,7 +66,7 @@ async function handleRegister() {
       <form @submit.prevent="handleRegister">
         <div class="mb-4">
           <label for="name" class="block text-sm font-medium text-gray-700">
-            Email
+            Name
           </label>
           <input
             type="text"
