@@ -1,51 +1,85 @@
 <script>
 // Define the component name
 export default {
-  name: "Register Page",
+  name: "RegisterPage",
 };
 </script>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, reactive } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
+import { useVuelidate } from "@vuelidate/core";
+import { required, sameAs, email, minLength } from "@vuelidate/validators"; // Added email and minLength
 
 const router = useRouter();
 
-const name = ref("");
-const email = ref("");
-const password = ref("");
-const confirmPassword = ref("");
+const form = reactive({
+  name: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+});
+
 const isLoading = ref(false);
 const errorMessage = ref("");
 
-// Computed property to check if passwords match
-const passwordsMatch = computed(() => {
-  return password.value === confirmPassword.value;
-});
+const rules = {
+  name: { required },
+  email: { required, email }, // Added email validation
+  password: { required, minLength: minLength(8) }, // Added minLength validation
+  confirmPassword: {
+    required,
+    sameAs: sameAs(
+      computed(() => form.password),
+      "password",
+    ), // Corrected sameAs usage with computed
+  },
+};
+
+// useVuelidate take rules in first and reactive data in secound arguments
+const v$ = useVuelidate(rules, form);
+
+// Computed property to check if passwords match - This is now handled by Vuelidate's sameAs validator.
+// We can remove it or keep it for a general UI hint if needed, but Vuelidate handles the blocking logic.
+// const passwordsMatch = computed(() => {
+//   return form.password === form.confirmPassword;
+// });
 
 async function handleRegister() {
-  if (!passwordsMatch.value) return;
+  errorMessage.value = ""; // Clear previous errors
 
+  // Perform synchronous validation
+  const result = await v$.value.$validate();
+
+  if (result) {
+    // If validation passes, proceed with asynchronous form submission
+    await submitForm();
+  } else {
+    // If validation fails, display a general error message if needed
+    errorMessage.value = "Please correct the form errors.";
+  }
+}
+
+async function submitForm() {
   isLoading.value = true;
-  errorMessage.value = "";
+  errorMessage.value = ""; // Clear previous errors again before API call
 
   try {
     const url = "http://localhost:8000/api/register";
     const response = await axios.post(url, {
-      name: name.value,
-      email: email.value,
-      password: password.value,
-      password_confirmation: confirmPassword.value,
+      name: form.name,
+      email: form.email,
+      password: form.password,
+      password_confirmation: form.confirmPassword,
     });
 
     if (response.status === 201) {
       router.push("/login");
-
-      // i think some action should be happend here
     }
   } catch (error) {
-    if (error.responses) {
+    if (error.response) {
+      // Changed 'error.responses' to 'error.response' as per axios standard
       errorMessage.value =
         error.response.data.message || "Registration failed. Please try again";
     } else {
@@ -71,11 +105,20 @@ async function handleRegister() {
           <input
             type="text"
             id="name"
-            v-model.trim="name"
+            v-model.trim="form.name"
             class="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter your name"
-            required
+            @blur="v$.name.$touch"
           />
+          <div v-if="v$.name.$error">
+            <p
+              v-for="error of v$.name.$errors"
+              :key="error.$uid"
+              class="mt-1 text-sm text-red-600"
+            >
+              {{ error.$message }}
+            </p>
+          </div>
         </div>
         <div class="mb-4">
           <label for="email" class="block text-sm font-medium text-gray-700">
@@ -84,11 +127,20 @@ async function handleRegister() {
           <input
             type="email"
             id="email"
-            v-model.trim="email"
+            v-model.trim="form.email"
             class="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter your email"
-            required
+            @blur="v$.email.$touch"
           />
+          <div v-if="v$.email.$error">
+            <p
+              v-for="error of v$.email.$errors"
+              :key="error.$uid"
+              class="mt-1 text-sm text-red-600"
+            >
+              {{ error.$message }}
+            </p>
+          </div>
         </div>
         <div class="mb-4">
           <label for="password" class="block text-sm font-medium text-gray-700">
@@ -97,11 +149,20 @@ async function handleRegister() {
           <input
             type="password"
             id="password"
-            v-model.trim="password"
+            v-model.trim="form.password"
             class="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter your password"
-            required
+            @blur="v$.password.$touch"
           />
+          <div v-if="v$.password.$error">
+            <p
+              v-for="error of v$.password.$errors"
+              :key="error.$uid"
+              class="mt-1 text-sm text-red-600"
+            >
+              {{ error.$message }}
+            </p>
+          </div>
         </div>
         <div class="mb-6">
           <label
@@ -113,22 +174,28 @@ async function handleRegister() {
           <input
             type="password"
             id="confirm-password"
-            v-model.trim="confirmPassword"
+            v-model.trim="form.confirmPassword"
             class="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Confirm your password"
-            required
+            @blur="v$.confirmPassword.$touch"
           />
-          <p
-            v-if="!passwordsMatch && confirmPassword"
-            class="mt-1 text-sm text-red-600"
-          >
-            Passwords do not match
-          </p>
+          <div v-if="v$.confirmPassword.$error">
+            <p
+              v-for="error of v$.confirmPassword.$errors"
+              :key="error.$uid"
+              class="mt-1 text-sm text-red-600"
+            >
+              {{ error.$message }}
+            </p>
+          </div>
         </div>
+        <p v-if="errorMessage" class="mb-4 text-center text-red-600 text-sm">
+          {{ errorMessage }}
+        </p>
         <button
           type="submit"
           class="w-full bg-cyan-600 text-white py-2 rounded-lg hover:bg-cyan-700 transition duration-300"
-          :disabled="!passwordsMatch"
+          :disabled="isLoading"
         >
           Sign Up
         </button>

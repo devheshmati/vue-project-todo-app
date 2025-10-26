@@ -10,6 +10,8 @@ import { ref } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "/stores/auth";
+import { useVuelidate } from "@vuelidate/core";
+import { required, email, minLength } from "@vuelidate/validators";
 
 const router = useRouter();
 const credentials = ref({
@@ -20,7 +22,24 @@ const isLoading = ref(true);
 const errorMessage = ref("");
 const authStore = useAuthStore();
 
+const rules = {
+  email: { required, email },
+  password: { required, minLength: minLength(8) },
+};
+
+const v$ = useVuelidate(rules, credentials);
+
 async function handleLogin() {
+  const result = await v$.value.$validate();
+
+  if (result) {
+    await submitForm();
+  } else {
+    errorMessage.value = "Please currect the form errors";
+  }
+}
+
+async function submitForm() {
   errorMessage.value = "";
 
   try {
@@ -53,8 +72,17 @@ async function handleLogin() {
             v-model.trim="credentials.email"
             class="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter your email"
-            required
+            @blur="v$.email.$touch"
           />
+          <div v-if="v$.email.$error">
+            <p
+              class="mt-1 text-sm text-red-600"
+              v-for="error of v$.email.$errors"
+              :key="error.$uid"
+            >
+              {{ error.$message }}
+            </p>
+          </div>
         </div>
         <div class="mb-6">
           <label for="password" class="block text-sm font-medium text-gray-700">
@@ -66,8 +94,17 @@ async function handleLogin() {
             v-model.trim="credentials.password"
             class="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter your password"
-            required
+            @blur="v$.password.$touch"
           />
+          <div v-if="v$.password.$error">
+            <p
+              class="mt-1 text-sm text-red-600"
+              v-for="error of v$.password.$errors"
+              :key="error.$uid"
+            >
+              {{ error.$message }}
+            </p>
+          </div>
         </div>
         <button
           type="submit"
