@@ -1,15 +1,22 @@
 <script setup>
 // import { ref } from "vue";
 import { useSidebarTogglerStore } from "/stores/sidebarToggler.js";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "/stores/auth.js";
 
 // define options
 defineOptions({
   name: "Sidebar",
 });
 
+const router = useRouter();
+const authStore = useAuthStore();
 const togglerStore = useSidebarTogglerStore();
 
-async function logout() {}
+async function logout() {
+  authStore.logOut();
+  router.push("/");
+}
 </script>
 
 <template>
@@ -137,7 +144,7 @@ async function logout() {}
         <button
           @click="logout"
           :class="togglerStore.isToggle ? 'px-4' : 'px-3'"
-          class="mt-4 py-5 text-gray-300 hover:text-cyan-200 hover:bg-gray-800 flex"
+          class="mt-4 py-5 text-gray-300 hover:text-cyan-200 hover:bg-gray-800 flex cursor-pointer"
         >
           <span>
             <svg

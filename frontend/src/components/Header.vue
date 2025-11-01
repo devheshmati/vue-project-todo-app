@@ -22,8 +22,8 @@ onMounted(async () => {
 
 // methods
 function logout() {
-  router.push("/login");
   authStore.logOut();
+  router.push("/login");
 }
 </script>
 
