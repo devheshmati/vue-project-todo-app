@@ -1,16 +1,14 @@
-<script>
-// Define the component name
-export default {
-  name: "RegisterPage",
-};
-</script>
-
 <script setup>
 import { ref, computed, reactive } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
 import { useVuelidate } from "@vuelidate/core";
 import { required, sameAs, email, minLength } from "@vuelidate/validators"; // Added email and minLength
+
+// Define Options
+defineOptions({
+  name: "RegisterPage",
+});
 
 const router = useRouter();
 
@@ -54,14 +52,14 @@ async function handleRegister() {
 
   if (result) {
     // If validation passes, proceed with asynchronous form submission
-    await submitForm();
+    await submitData();
   } else {
     // If validation fails, display a general error message if needed
     errorMessage.value = "Please correct the form errors.";
   }
 }
 
-async function submitForm() {
+async function submitData() {
   isLoading.value = true;
   errorMessage.value = ""; // Clear previous errors again before API call
 

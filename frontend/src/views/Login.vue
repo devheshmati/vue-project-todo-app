@@ -1,10 +1,3 @@
-<script>
-// Define the component name
-export default {
-  name: "Login Page",
-};
-</script>
-
 <script setup>
 import { ref } from "vue";
 import axios from "axios";
@@ -12,6 +5,11 @@ import { useRouter } from "vue-router";
 import { useAuthStore } from "/stores/auth";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
+
+// define Options
+defineOptions({
+  name: "LoginPage",
+});
 
 const router = useRouter();
 const credentials = ref({
@@ -33,17 +31,17 @@ async function handleLogin() {
   const result = await v$.value.$validate();
 
   if (result) {
-    await submitForm();
+    await submitData();
   } else {
     errorMessage.value = "Please currect the form errors";
   }
 }
 
-async function submitForm() {
+async function submitData() {
   errorMessage.value = "";
 
   try {
-    authStore.login(credentials.value);
+    await authStore.login(credentials.value);
   } catch (error) {
     if (error.message) {
       console.log(error.message);

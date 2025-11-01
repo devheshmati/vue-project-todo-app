@@ -1,7 +1,10 @@
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
-import Todos from "../views/Todos.vue";
+import Todos from "../views/dashboard/todos/Todos.vue";
+import CreateTodo from "../views/dashboard/todos/CreateTodo.vue";
+import Dashboard from "../views/dashboard/Dashboard.vue";
+
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
@@ -18,8 +21,18 @@ const routes = [
     component: Register,
   },
   {
-    path: "/todos",
-    component: Todos,
+    path: "/dashboard",
+    component: Dashboard,
+    children: [
+      {
+        path: "todos",
+        component: Todos,
+      },
+      {
+        path: "todos/create",
+        component: CreateTodo,
+      },
+    ],
   },
 ];
 

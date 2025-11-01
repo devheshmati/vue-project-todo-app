@@ -1,28 +1,30 @@
-<script>
-export default {
-  name: "HeaderComponent",
-};
-</script>
-
 <script setup>
 import { useRouter } from "vue-router";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useAuthStore } from "/stores/auth";
 
+// Define Options
+defineOptions({
+  name: "HeaderComponent",
+});
+
 const router = useRouter();
-const isAuthenticate = ref(false);
 const authStore = useAuthStore();
 
-onMounted(() => {
+const isAuthenticate = computed(() => {
+  return !!authStore.userToken;
+});
+
+onMounted(async () => {
   // check user authenticate or not
-  isAuthenticate.value = authStore.checkAuth();
+  await authStore.checkAuth();
 });
 
 // methods
-const logout = () => {
+function logout() {
   router.push("/login");
   authStore.logOut();
-};
+}
 </script>
 
 <template>
@@ -57,6 +59,13 @@ const logout = () => {
               to="/"
               class="hover:text-gray-200 transition duration-200"
               >Home</router-link
+            >
+          </li>
+          <li v-if="isAuthenticate">
+            <router-link
+              to="/dashboard"
+              class="hover:text-gray-200 transition duration-200"
+              >Dashboard</router-link
             >
           </li>
           <li v-if="isAuthenticate">

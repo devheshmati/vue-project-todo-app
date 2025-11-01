@@ -1,13 +1,12 @@
-<script>
-export default {
-  name: "Home Page",
-};
-</script>
-
 <script setup>
 import Header from "../components/Header.vue";
 import { useAuthStore } from "/stores/auth";
 import { onMounted, ref } from "vue";
+
+// define options
+defineOptions({
+  name: "HomePage",
+});
 
 const isAuthenticate = ref(false);
 

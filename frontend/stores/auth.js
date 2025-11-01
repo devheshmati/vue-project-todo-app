@@ -9,6 +9,7 @@ export const useAuthStore = defineStore("auth", () => {
   const router = useRouter();
   const errorMessage = ref("");
   const isLoading = ref(false);
+  const testVal = ref("This is test");
 
   // Handle User Login
   async function login(credentials) {
@@ -22,7 +23,7 @@ export const useAuthStore = defineStore("auth", () => {
       if (response.status === 200) {
         userToken.value = response.data.token;
         localStorage.setItem("auth_token", userToken.value);
-        router.push("/todos");
+        router.push("/dashboard/todos");
       } else {
         errorMessage.value = "An Unexpected login error occured.";
         throw new Error(errorMessage);
@@ -61,5 +62,13 @@ export const useAuthStore = defineStore("auth", () => {
     router.push("/");
   }
 
-  return { userToken, errorMessage, isLoading, login, checkAuth, logOut };
+  return {
+    userToken,
+    errorMessage,
+    isLoading,
+    testVal,
+    login,
+    checkAuth,
+    logOut,
+  };
 });
