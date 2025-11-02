@@ -9,6 +9,7 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
+    // Register
     public function register(Request $request)
     {
         $request->validate([
@@ -23,11 +24,16 @@ class AuthController extends Controller
             'password' => Hash::make($request->password)
         ]);
 
-        $token = $user->createToken('api-token')->plainTextToken;
+        $token = $user->createToken('api_token')->plainTextToken;
 
-        return response()->json(['token' => $token], 201);
+        return response()->json([
+            'message' => "User registerd successfully.",
+            'user' => $user,
+            'token' => $token
+        ], 201);
     }
 
+    // Login
     public function login(Request $request)
     {
         $request->validate([
@@ -38,14 +44,29 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
+            // return response()->json(['message' => 'Invalid credentials provided.'], 401);
             throw ValidationException::withMessages([
-                'email' => ['The provided credential are incurrct.']
+                'email' => ['This provided credentials are incurrect.'],
             ]);
         }
 
-        $token = $user->createToken('api-token')->plainTextToken;
+        $token = $user->createToken('api_token')->plainTextToken;
 
-        return response()->json(['token' => $token]);
+        return response()->json([
+            'message' => "Login successful.",
+            'user' => $user,
+            'token' => $token
+        ]);
+    }
+
+    // Logout
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json([
+            'message' => 'Logged out successfully.',
+        ]);
     }
 
     public function testRegister(Request $request)
