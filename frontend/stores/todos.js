@@ -40,7 +40,7 @@ export const useTodoStore = defineStore("todos", () => {
       }
 
       // return todosList
-      todosList.value = response.data.todos;
+      todosList.value = response.data;
     } catch (error) {
       errorMessage.value =
         error.message?.data?.message ||
@@ -69,7 +69,7 @@ export const useTodoStore = defineStore("todos", () => {
 
       // handle error
       if (response.status === 201) {
-        todosList.value.unshift(response.data.todo);
+        todosList.value.push(response.data.todo); // add to todolist
         return {
           success: true,
           message: "Todo created successfully.",
@@ -90,11 +90,54 @@ export const useTodoStore = defineStore("todos", () => {
   }
 
   // update task
-  async function updateTodo(id) {}
+  async function updateTodo(todo) {
+    errorMessage.value = "";
+    isLoading.value = true;
+
+    try {
+      const headers = { Authorization: `Bearer ${authStore.userToken}` };
+
+      const updatedTodo = { ...todo, is_done: !todo.is_done };
+
+      // request to the api
+      const response = await axios.put(
+        `${baseUrl}/todos/${todo.id}`,
+        updatedTodo,
+        { headers },
+      );
+
+      if (response.status === 200) {
+        const newTodo = response.data.todo ?? response.data;
+        if (newTodo && newTodo.id) {
+          const index = todosList.value.findIndex((t) => t.id === todo.id);
+          if (index !== -1) {
+            todosList.value[index] = newTodo; // update locally
+          }
+        }
+
+        return {
+          success: true,
+          message: "Todo updated successfully",
+          todo: newTodo,
+        };
+      } else {
+        throw new Error("Failed to update todo!");
+      }
+    } catch (error) {
+      errorMessage.value =
+        error.response?.data?.message ||
+        error.message ||
+        "Error updating todo.";
+
+      return { success: false, message: errorMessage.value };
+    } finally {
+      isLoading.value = false;
+    }
+  }
 
   // delete task
   async function deleteTodo(id) {}
 
   // exports
-  return { todosList, errorMessage, isLoading, getTodos, addTodo };
+  return { todosList, errorMessage, isLoading, getTodos, addTodo, updateTodo };
 });

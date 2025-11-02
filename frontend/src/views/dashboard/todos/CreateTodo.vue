@@ -16,7 +16,7 @@ const isLoading = ref(false);
 const form = reactive({
   title: "",
   desc: "",
-  isDone: false,
+  is_done: false,
 });
 const baseUrl = "http://localhost:8000/api";
 

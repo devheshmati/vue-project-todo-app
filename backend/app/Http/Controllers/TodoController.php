@@ -35,7 +35,27 @@ class TodoController extends Controller
 
     public function show() {}
 
-    public function update() {}
+    public function update(Request $request, Todo $todo)
+    {
+        if ($todo->user_id !== $request->user()->id) {
+            return response()->json([
+                'message' => "You are not authorized to update this todo."
+            ], 403);
+        }
+
+        $validated = $request->validate([
+            'title' => 'string|max:255',
+            'description' => "string|max:1000",
+            'is_done' => 'boolean'
+        ]);
+
+        $todo->update($validated);
+
+        return response()->json([
+            'message' => "Todo updated successfully.",
+            'todo' => $todo
+        ], 200);
+    }
 
     public function destroy() {}
 

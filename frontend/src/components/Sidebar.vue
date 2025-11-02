@@ -22,7 +22,7 @@ async function logout() {
 <template>
   <div
     :class="togglerStore.isToggle ? 'w-[300px]' : 'w-[50px]'"
-    class="sidebar absolute left-0 top-0 bg-cyan-800 h-screen overflow-hidden"
+    class="sidebar absolute left-0 top-0 bg-[rgba(0,0,0,1)] h-screen overflow-hidden z-10"
   >
     <ul class="flex flex-col mt-10">
       <div

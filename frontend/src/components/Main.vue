@@ -11,10 +11,8 @@ const togglerStore = useSidebarTogglerStore();
 
 <template>
   <div
-    class="bg-gray-400 ms-auto oc min-h-screen"
-    :class="
-      togglerStore.isToggle ? 'w-[calc(100vw-300px)]' : 'w-[calc(100vw-50px)]'
-    "
+    class="bg-gray-400 ms-auto oc min-h-screen relative z-0"
+    :class="togglerStore.isToggle ? 'ps-[300px]' : 'ps-[50px]'"
   >
     <slot></slot>
   </div>
