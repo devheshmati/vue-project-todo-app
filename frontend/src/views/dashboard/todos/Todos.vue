@@ -17,6 +17,7 @@ const errorMessage = ref("");
 
 onMounted(async () => {
   errorMessage.value = "";
+  isLoading.value = true;
   // check saved user token after logged in
   const isAuthenticate = await !!authStore.checkAuth();
   if (isAuthenticate) {

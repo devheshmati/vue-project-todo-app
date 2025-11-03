@@ -1,14 +1,12 @@
 <script setup>
-import { useSidebarTogglerStore } from "/stores/sidebarToggler.js";
-import { onMounted, computed } from "vue";
+import { onMounted, computed, ref, reactive } from "vue";
 import { useTodoStore } from "/stores/todos.js";
+import Modal from "../components/Modal.vue";
 
 // Define Options
 defineOptions({
   name: "TodosListComponent",
 });
-
-const todoStore = useTodoStore();
 
 defineProps({
   data: {
@@ -19,16 +17,77 @@ defineProps({
   errorMessage: {
     type: String,
     required: true,
-    default: () => "",
+    default: "",
   },
 });
 
-const togglerStore = useSidebarTogglerStore();
+const todoStore = useTodoStore();
+
+// this is for modal
+const isToggle = ref(false);
+const newTodoData = reactive({
+  id: null,
+  title: "",
+  description: "",
+});
+
+// open modal and set data
+function openEditModal(todo) {
+  newTodoData.id = todo.id;
+  newTodoData.title = todo.title;
+  newTodoData.description = todo.description;
+  isToggle.value = true;
+}
+
+function closeModal() {
+  isToggle.value = false;
+}
+
+async function submitEdit() {
+  await todoStore.editTodo(newTodoData.id, {
+    title: newTodoData.title,
+    description: newTodoData.description,
+  });
+
+  closeModal();
+}
 </script>
 
 <template>
-  <div v-if="!data.length > 0" class="bg-orange-800 text-white p-4">
-    There is not any task in list.
+  <!-- Modal -->
+  <Modal :isToggle="isToggle">
+    <form class="flex flex-col gap-3" @submit.prevent="submitEdit">
+      <h2 class="text-xl font-semibold mb-2">Edit Todo</h2>
+      <input
+        v-model="newTodoData.title"
+        placeholder="Enter title..."
+        class="border p-2 rounded"
+      />
+      <textarea
+        v-model="newTodoData.description"
+        placeholder="Enter description..."
+        class="border p-2 rounded"
+      ></textarea>
+      <div class="flex justify-end gap-2">
+        <button
+          type="button"
+          class="bg-gray-500 text-white px-3 py-1 rounded"
+          @click="closeModal"
+        >
+          Cancel
+        </button>
+        <button type="submit" class="bg-blue-600 text-white px-3 py-1 rounded">
+          Update
+        </button>
+      </div>
+    </form>
+  </Modal>
+
+  <div
+    v-if="!data.length && !errorMessage"
+    class="bg-orange-800 text-white p-4"
+  >
+    There are no tasks in list.
   </div>
   <div v-if="errorMessage" class="bg-red-800 text-white p-4">
     {{ errorMessage }}
@@ -53,7 +112,7 @@ const togglerStore = useSidebarTogglerStore();
             <!-- Check -->
             <button
               class="cursor-pointer text-slate-600 hover:text-green-500"
-              @click="todoStore.updateTodo(todo)"
+              @click="todoStore.updateTodoStatus(todo)"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -72,7 +131,10 @@ const togglerStore = useSidebarTogglerStore();
             </button>
 
             <!--Update -->
-            <button class="cursor-pointer text-slate-600 hover:text-amber-500">
+            <button
+              class="cursor-pointer text-slate-600 hover:text-amber-500"
+              @click="openEditModal(todo)"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

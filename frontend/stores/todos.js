@@ -90,7 +90,7 @@ export const useTodoStore = defineStore("todos", () => {
   }
 
   // update task
-  async function updateTodo(todo) {
+  async function updateTodoStatus(todo) {
     errorMessage.value = "";
     isLoading.value = true;
 
@@ -130,6 +130,51 @@ export const useTodoStore = defineStore("todos", () => {
         "Error updating todo.";
 
       return { success: false, message: errorMessage.value };
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  // edit task
+  async function editTodo(todoId, updatedTodo) {
+    errorMessage.value = "";
+    isLoading.value = true;
+
+    try {
+      const headers = { Authorization: `Bearer ${authStore.userToken}` };
+
+      // create request to api
+      const response = await axios.put(
+        `${baseUrl}/todos/${todoId}`,
+        updatedTodo,
+        { headers },
+      );
+
+      if (response.status !== 200) {
+        throw new Error("Update todo failed!");
+      }
+
+      const index = todosList.value.findIndex((t) => t.id === todoId);
+
+      if (index !== -1) {
+        todosList.value[index] = response.data.todo; // update locally
+      }
+
+      return {
+        success: true,
+        message: response.data.message,
+        todo: response.data.todo,
+      };
+    } catch (error) {
+      errorMessage.value =
+        error.response?.data?.message ||
+        error.message ||
+        "Error updating todo.";
+
+      return {
+        success: false,
+        message: errorMessage.value,
+      };
     } finally {
       isLoading.value = false;
     }
@@ -180,7 +225,8 @@ export const useTodoStore = defineStore("todos", () => {
     isLoading,
     getTodos,
     addTodo,
-    updateTodo,
+    updateTodoStatus,
     deleteTodo,
+    editTodo,
   };
 });
