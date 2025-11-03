@@ -57,7 +57,22 @@ class TodoController extends Controller
         ], 200);
     }
 
-    public function destroy() {}
+    public function destroy(Request $request, Todo $todo)
+    {
+        // if user not authorized
+        if ($todo->user_id !== $request->user()->id) {
+            return response()->json([
+                'message' => "You are not authorized to delete this todo."
+            ], 403);
+        }
+
+        // find todo for delete
+        $todo->delete();
+
+        return response()->json([
+            'message' => "Todo deleted successfully."
+        ], 200);
+    }
 
     protected function authorizeTodo(Todo $todo) {}
 }

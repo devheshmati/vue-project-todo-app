@@ -136,8 +136,51 @@ export const useTodoStore = defineStore("todos", () => {
   }
 
   // delete task
-  async function deleteTodo(id) {}
+  async function deleteTodo(todoId) {
+    errorMessage.value = "";
+    isLoading.value = true;
+
+    try {
+      const headers = { Authorization: `Bearer ${authStore.userToken}` };
+      const response = await axios.delete(`${baseUrl}/todos/${todoId}`, {
+        headers,
+      });
+
+      if (response.status === 200) {
+        // update todoList
+        todosList.value = todosList.value.filter((t) => t.id !== todoId);
+
+        // return successfully message to the user
+        return {
+          success: true,
+          message: response.data.message || "Todo deleted successfully.",
+        };
+      } else {
+        throw new Error("Failed to delete todo!");
+      }
+    } catch (error) {
+      errorMessage.value =
+        error.response?.data?.message ||
+        error.message ||
+        "Error deleting todo.";
+
+      return {
+        success: false,
+        message: errorMessage.value,
+      };
+    } finally {
+      isLoading.value = false;
+    }
+  }
 
   // exports
-  return { todosList, errorMessage, isLoading, getTodos, addTodo, updateTodo };
+  return {
+    todosList,
+    errorMessage,
+    isLoading,
+    getTodos,
+    addTodo,
+    updateTodo,
+    deleteTodo,
+  };
 });

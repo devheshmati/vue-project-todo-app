@@ -27,27 +27,34 @@ const togglerStore = useSidebarTogglerStore();
 </script>
 
 <template>
-  <div>
+  <div v-if="!data.length > 0" class="bg-orange-800 text-white p-4">
+    There is not any task in list.
+  </div>
+  <div v-if="errorMessage" class="bg-red-800 text-white p-4">
+    {{ errorMessage }}
+  </div>
+
+  <div v-if="data.length > 0 && !errorMessage" class="min-w-2/5">
     <div class="bg-gray-800 p-4 rounded-t-lg">
       <h3 class="text-xl font-bold text-center text-white">Todo List</h3>
     </div>
     <div class="bg-gray-800 p-4 h-3/4 rounded-b-lg">
-      <ul
-        v-if="data && !errorMessage"
-        class="flex flex-col gap-4 mx-auto overflow-y-scroll h-[400px] pe-4"
-      >
+      <ul class="flex flex-col gap-4 mx-auto overflow-y-scroll h-[400px] pe-4">
         <li
           v-for="todo in data"
           :key="todo.id"
           class="grid grid-cols-6 p-4 w-full"
-          :class="todo.is_done ? 'bg-green-600' : 'bg-gray-300'"
+          :class="todo.is_done ? 'bg-lime-600' : 'bg-gray-300'"
         >
           <div class="col-span-4">
             <span>{{ todo.title }}</span>
           </div>
           <div class="col-span-2 flex justify-end gap-2">
             <!-- Check -->
-            <button class="cursor-pointer" @click="todoStore.updateTodo(todo)">
+            <button
+              class="cursor-pointer text-slate-600 hover:text-green-500"
+              @click="todoStore.updateTodo(todo)"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -65,7 +72,7 @@ const togglerStore = useSidebarTogglerStore();
             </button>
 
             <!--Update -->
-            <button class="cursor-pointer">
+            <button class="cursor-pointer text-slate-600 hover:text-amber-500">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -83,7 +90,10 @@ const togglerStore = useSidebarTogglerStore();
             </button>
 
             <!-- Delete -->
-            <button class="cursor-pointer">
+            <button
+              class="cursor-pointer text-slate-600 hover:text-red-500"
+              @click="todoStore.deleteTodo(todo.id)"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
