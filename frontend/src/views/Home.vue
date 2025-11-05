@@ -21,7 +21,6 @@ onMounted(() => {
   <div>
     <Header />
     <div>This is home page</div>
-    <p></p>
   </div>
 </template>
 

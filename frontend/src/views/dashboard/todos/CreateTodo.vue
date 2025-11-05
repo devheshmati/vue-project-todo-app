@@ -52,7 +52,7 @@ async function submitData() {
 
     form.title = "";
     form.description = "";
-    form.is_done = "false";
+    form.is_done = false;
 
     v$.value.$reset();
   } else {
