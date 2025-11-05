@@ -10,26 +10,32 @@ import { createRouter, createWebHistory } from "vue-router";
 const routes = [
   {
     path: "/",
+    name: "home",
     component: Home,
   },
   {
     path: "/login",
+    name: "login",
     component: Login,
   },
   {
     path: "/register",
+    name: "register",
     component: Register,
   },
   {
     path: "/dashboard",
+    name: "dashboard",
     component: Dashboard,
     children: [
       {
         path: "todos",
+        name: "todos",
         component: Todos,
       },
       {
         path: "todos/create",
+        name: "createTodo",
         component: CreateTodo,
       },
     ],
