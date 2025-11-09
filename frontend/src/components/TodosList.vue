@@ -97,35 +97,42 @@ async function submitEdit() {
     <div class="bg-gray-800 p-4 rounded-t-lg">
       <h3 class="text-xl font-bold text-center text-white">Todo List</h3>
     </div>
-    <div class="bg-gray-800 p-4 h-3/4 rounded-b-lg">
-      <ul class="flex flex-col gap-4 mx-auto overflow-y-scroll h-[400px] pe-4">
+    <div class="bg-gray-400 p-4 h-3/4 rounded-b-lg">
+      <ul class="flex flex-col gap-4 mx-auto overflow-y-scroll h-[400px]">
         <li
           v-for="todo in data"
           :key="todo.id"
-          class="grid grid-cols-6 p-4 w-full"
-          :class="todo.is_done ? 'bg-lime-600' : 'bg-gray-300'"
+          class="grid grid-cols-6 p-4 w-full rounded-lg"
+          :class="todo.is_done ? 'bg-gray-300' : 'bg-white'"
         >
           <div class="col-span-4">
-            <span>{{ todo.title }}</span>
+            <span :class="todo.is_done ? 'text-slate-600' : ''">{{
+              todo.title
+            }}</span>
           </div>
           <div class="col-span-2 flex justify-end gap-2">
             <!-- Check -->
             <button
-              class="cursor-pointer text-slate-600 hover:text-green-500"
+              class="cursor-pointer rounded-md"
+              :class="todo.is_done ? 'bg-slate-400' : 'bg-slate-300'"
               @click="todoStore.updateTodoStatus(todo)"
             >
+              <input
+                type="checkbox"
+                :checked="todo.is_done"
+                class="peer sr-only"
+              />
               <svg
-                xmlns="http://www.w3.org/2000/svg"
+                class="w-6 h-6 text-transparent peer-checked:text-slate-700 transition-colors duration-200"
                 fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
                 stroke="currentColor"
-                class="size-6"
+                stroke-width="2.5"
+                viewBox="0 0 24 24"
               >
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  d="m4.5 12.75 6 6 9-13.5"
+                  d="M4.5 12.75l6 6 9-13.5"
                 />
               </svg>
             </button>
@@ -177,3 +184,14 @@ async function submitEdit() {
     </div>
   </div>
 </template>
+
+<style scoped>
+ul::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome, Safari, and Opera */
+}
+
+ul {
+  -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+}
+</style>

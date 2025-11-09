@@ -6,7 +6,7 @@ defineOptions({ name: "DashboardReportComponent" });
 
 const todoStore = useTodoStore();
 
-// آمار محاسبه‌شده (همیشه آپدیت)
+// get todoList by filtered
 const totalTodos = computed(() => todoStore.todosList.length);
 
 const doneTodos = computed(
@@ -17,10 +17,10 @@ const pendingTodos = computed(
   () => todoStore.todosList.filter((t) => !t.is_done).length,
 );
 
-// فقط یکبار موقع لود داشبورد → fetch
+// fetch data
 onMounted(() => {
   if (!todoStore.todosList.length) {
-    todoStore.getTodos(); // async → خودش isLoading داره
+    todoStore.getTodos(); // We should fetch data and set into the todoList
   }
 });
 </script>
@@ -52,12 +52,12 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- لودینگ ساده -->
+    <!-- simple loading -->
     <div v-if="todoStore.isLoading" class="mt-4 text-center text-gray-500">
       Loading...
     </div>
 
-    <!-- خطا -->
+    <!-- error -->
     <div v-if="todoStore.errorMessage" class="mt-4 text-center text-red-500">
       {{ todoStore.errorMessage }}
     </div>

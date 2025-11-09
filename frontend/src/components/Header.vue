@@ -28,9 +28,7 @@ function logout() {
 </script>
 
 <template>
-  <header
-    class="bg-linear-to-r from-gray-700 to-[rgba(0,0,100,0.7)] text-white shadow-lg"
-  >
+  <header class="bg-black/90 z-100 text-white shadow-lg">
     <div
       class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center"
     >

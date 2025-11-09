@@ -45,7 +45,7 @@ class TodoController extends Controller
 
         $validated = $request->validate([
             'title' => 'string|max:255',
-            'description' => "string|max:1000",
+            'description' => "nullable|string|max:1000",
             'is_done' => 'boolean'
         ]);
 
