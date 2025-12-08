@@ -33,7 +33,7 @@ function logout() {
       class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center"
     >
       <div class="flex items-center space-x-4">
-        <img src="/images/todo-logo.png" alt="To-Do App Logo" class="h-8 w-8" />
+        <img src="/logos/todo-logo.png" alt="To-Do App Logo" class="h-8 w-8" />
         <h1 class="text-xl font-semibold">To-Do App</h1>
       </div>
       <nav>

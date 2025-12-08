@@ -6,7 +6,6 @@ import { useAuthStore } from "./auth.js";
 export const useTodoStore = defineStore("todos", () => {
   // define tasks list
   const todosList = ref([]);
-  const baseUrl = "http://localhost:8000/api";
   const errorMessage = ref("");
   const isLoading = ref(false);
   const authStore = useAuthStore();
@@ -32,7 +31,7 @@ export const useTodoStore = defineStore("todos", () => {
       };
 
       // fetch data from api
-      const response = await axios.get(`${baseUrl}/todos`, { headers });
+      const response = await axios.get(`/api/todos`, { headers });
 
       // manage errors
       if (!response.status === 200) {
@@ -63,7 +62,7 @@ export const useTodoStore = defineStore("todos", () => {
       };
 
       // we need to fetch data to the api for create todo
-      const response = await axios.post(`${baseUrl}/todos`, todoData, {
+      const response = await axios.post(`/api/todos`, todoData, {
         headers,
       });
 
@@ -100,11 +99,9 @@ export const useTodoStore = defineStore("todos", () => {
       const updatedTodo = { ...todo, is_done: !todo.is_done };
 
       // request to the api
-      const response = await axios.put(
-        `${baseUrl}/todos/${todo.id}`,
-        updatedTodo,
-        { headers },
-      );
+      const response = await axios.put(`/api/todos/${todo.id}`, updatedTodo, {
+        headers,
+      });
 
       if (response.status === 200) {
         const newTodo = response.data.todo ?? response.data;
@@ -144,11 +141,9 @@ export const useTodoStore = defineStore("todos", () => {
       const headers = { Authorization: `Bearer ${authStore.userToken}` };
 
       // create request to api
-      const response = await axios.put(
-        `${baseUrl}/todos/${todoId}`,
-        updatedTodo,
-        { headers },
-      );
+      const response = await axios.put(`/api/todos/${todoId}`, updatedTodo, {
+        headers,
+      });
 
       if (response.status !== 200) {
         throw new Error("Update todo failed!");
@@ -187,7 +182,7 @@ export const useTodoStore = defineStore("todos", () => {
 
     try {
       const headers = { Authorization: `Bearer ${authStore.userToken}` };
-      const response = await axios.delete(`${baseUrl}/todos/${todoId}`, {
+      const response = await axios.delete(`/api/todos/${todoId}`, {
         headers,
       });
 

@@ -21,16 +21,16 @@ defineOptions({
 
 <template>
   <div>
-    <footer class="bg-black/90 text-white px-18 pb-4 pt-12">
+    <footer class="bg-black/90 text-white px-6 sm:px-18 pb-4 pt-12">
       <!--Top Section-->
-      <div class="grid grid-cols-4 gap-4 pb-12">
+      <div class="grid grid-cols-2 gap-4 pb-12 sm:grid-cols-4">
         <!--col 1-->
         <div class="flex flex-col gap-2">
           <!-- logo -->
-          <router-link :to="{ name: 'home' }" class="flex gap-1 items-center">
+          <router-link :to="{ name: 'Home' }" class="flex gap-1 items-center">
             <span>
               <img
-                src="/images/todo-logo.png"
+                src="/logos/todo-logo.png"
                 alt="To-Do App Logo"
                 class="h-8 w-8"
               />
@@ -50,7 +50,7 @@ defineOptions({
           <h4 class="font-bold">APP</h4>
           <ul class="mt-4 text-gray-300">
             <li class="py-1">
-              <router-link :to="{ name: 'dashboard' }">Dashboard</router-link>
+              <router-link :to="{ name: 'Dashboard' }">Dashboard</router-link>
             </li>
             <li class="py-1">
               <router-link to="#features" @click.prevent="scrollTo('#features')"
@@ -70,10 +70,10 @@ defineOptions({
           <h4 class="font-bold">COMPANY</h4>
           <ul class="mt-4 text-gray-300">
             <li class="py-1">
-              <router-link :to="{ name: 'dashboard' }">About Us</router-link>
+              <router-link :to="{ name: 'Dashboard' }">About Us</router-link>
             </li>
             <li class="py-1">
-              <router-link :to="{ name: 'dashboard' }">Contact</router-link>
+              <router-link :to="{ name: 'Dashboard' }">Contact</router-link>
             </li>
           </ul>
         </div>
@@ -83,12 +83,12 @@ defineOptions({
           <h4 class="font-bold">LEGAL</h4>
           <ul class="mt-4 text-gray-300">
             <li class="py-1">
-              <router-link :to="{ name: 'dashboard' }"
+              <router-link :to="{ name: 'Dashboard' }"
                 >Privacy Plicy</router-link
               >
             </li>
             <li class="py-1">
-              <router-link :to="{ name: 'dashboard' }"
+              <router-link :to="{ name: 'Dashboard' }"
                 >Terms of Service</router-link
               >
             </li>
@@ -97,17 +97,19 @@ defineOptions({
       </div>
 
       <!--Bottom Section-->
-      <div class="grid grid-cols-2 border-t-1 border-t-slate-600 pt-5">
+      <div
+        class="grid grid-cols-1 border-t-1 border-t-slate-600 pt-5 sm:grid-cols-2"
+      >
         <!--col 1 copyright-->
         <div>
-          <span class="text-sm text-slate-400">
+          <span class="text-sm text-slate-400 block text-center sm:text-start">
             &copy; To-Do App. All rights reserved.
           </span>
         </div>
 
         <!--col 2 social links-->
         <div>
-          <ul class="flex justify-end gap-6">
+          <ul class="flex justify-center sm:justify-end gap-6">
             <li>
               <a
                 href="#"

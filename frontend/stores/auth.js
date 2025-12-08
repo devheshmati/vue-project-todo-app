@@ -5,7 +5,6 @@ import { useRouter } from "vue-router";
 
 export const useAuthStore = defineStore("auth", () => {
   const userToken = ref("");
-  const baseUrl = "http://localhost:8000/api";
   const router = useRouter();
   const errorMessage = ref("");
   const isLoading = ref(false);
@@ -15,10 +14,9 @@ export const useAuthStore = defineStore("auth", () => {
   async function login(credentials) {
     isLoading.value = true;
     errorMessage.value = "";
-    const url = `${baseUrl}/login`;
 
     try {
-      const response = await axios.post(url, credentials);
+      const response = await axios.post("/api/login", credentials);
 
       if (response.status === 200) {
         userToken.value = response.data.token;
@@ -29,7 +27,6 @@ export const useAuthStore = defineStore("auth", () => {
         throw new Error(errorMessage);
       }
     } catch (error) {
-      console.log("Login Error.", error.message);
       errorMessage.value =
         error.response.data.message ||
         "Validation failed. Please check your inputs.";

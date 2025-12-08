@@ -64,7 +64,7 @@ async function submitData() {
   errorMessage.value = ""; // Clear previous errors again before API call
 
   try {
-    const url = "http://localhost:8000/api/register";
+    const url = "/api/register";
     const response = await axios.post(url, {
       name: form.name,
       email: form.email,

@@ -1,3 +1,15 @@
+<script setup>
+import { gsap } from "gsap";
+import { SplitText } from "gsap/SplitText";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+defineOptions({
+  name: "FeaturesSection",
+});
+
+gsap.registerPlugin(SplitText, ScrollTrigger);
+</script>
+
 <template>
   <section id="features" class="py-16 sm:py-24 bg-gray-200 text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -104,11 +116,3 @@
     </div>
   </section>
 </template>
-
-<script>
-export default {
-  name: "FeaturesSection",
-};
-</script>
-
-<style scoped></style>

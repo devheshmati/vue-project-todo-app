@@ -1,7 +1,88 @@
-<script>
-export default {
+<script setup>
+import { ref, onMounted } from "vue";
+import { gsap } from "gsap";
+import { SplitText } from "gsap/SplitText";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import AbstractTodoCard from "/images/abstract-like-todo-card.webp";
+
+gsap.registerPlugin(SplitText, ScrollTrigger);
+
+defineOptions({
   name: "HeroSection",
+});
+
+const firstHeader = ref(null);
+const firstText = ref(null);
+const mainImage = ref(null);
+
+const defaultSettings = {
+  wordsClass: "word",
+  charsClass: "char",
+  linesClass: "line",
+  autoSplit: true,
 };
+
+// create timeline
+const tl = gsap.timeline();
+
+// anime for headers
+const anime1 = {
+  autoAlpha: 0,
+  yPercent: 20,
+  rotation: "random(-60,60)",
+  ease: "back.out",
+  stagger: {
+    each: 0.04,
+  },
+};
+
+// anime for text
+const anime2 = {
+  autoAlpha: 0,
+  yPercent: 100,
+  ease: "power3.out",
+  stagger: {
+    amount: 0.2,
+  },
+};
+
+const anime3 = {
+  opacity: 0,
+  duration: 1,
+  xPercent: 50,
+  ease: "power3.out",
+};
+
+onMounted(() => {
+  // split header
+  const splitFirstHeader = SplitText.create(firstHeader.value, {
+    ...defaultSettings,
+    type: "chars",
+    mask: "chars",
+  });
+
+  // split text
+  const splitFirstText = SplitText.create(firstText.value, {
+    ...defaultSettings,
+    type: "lines",
+    mask: "lines",
+  });
+
+  tl.from(splitFirstHeader.chars, anime1).from(
+    splitFirstText.lines,
+    anime2,
+    "-=0.6",
+  );
+
+  tl.eventCallback("onComplete", () => {
+    splitFirstHeader.revert();
+    splitFirstText.revert();
+  });
+
+  gsap.from("#first-image", {
+    xPercent: 100,
+  });
+});
 </script>
 
 <template>
@@ -12,9 +93,7 @@ export default {
       <!-- Background Image or Pattern - Let's generate a subtle, abstract background pattern -->
       <div
         class="absolute inset-0 bg-cover bg-center opacity-20"
-        style="
-          background-image: url(&quot;https://images.unsplash.com/photo-1612833604082-f5c711a7b07e?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&quot;);
-        "
+        style="background-image: url(&quot;${}&quot;)"
       ></div>
       <div class="absolute inset-0 bg-black opacity-30"></div>
     </div>
@@ -25,12 +104,14 @@ export default {
       <!-- Left Content Area -->
       <div class="lg:w-1/2 text-center lg:text-left mb-12 lg:mb-0">
         <h1
+          ref="firstHeader"
           class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-6 animate-fade-in-up"
         >
           Organize Your Life, Achieve Your Goals.
         </h1>
         <p
-          class="text-lg sm:text-xl mb-8 opacity-90 animate-fade-in-up delay-200"
+          ref="firstText"
+          class="first-text text-lg sm:text-xl mb-8 opacity-90 animate-fade-in-up delay-200"
         >
           Effortlessly manage your tasks, boost productivity, and conquer your
           day with our intuitive todo app.
@@ -57,6 +138,7 @@ export default {
         <!-- Placeholder for a compelling app screenshot or illustration -->
         <!-- I'll generate an image of a clean, modern todo app interface on a device -->
         <img
+          id="first-image"
           src="/images/hero-section-image.webp"
           alt="Todo App Interface"
           class="rounded-lg shadow-2xl w-full max-w-md lg:max-w-lg transform hover:scale-105 transition duration-500 ease-in-out animate-fade-in-right"
