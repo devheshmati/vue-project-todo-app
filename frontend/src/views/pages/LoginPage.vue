@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, nextTick } from "vue";
+import { ref, watch, nextTick, onUnmounted } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "/stores/auth";
@@ -85,6 +85,11 @@ watch(
   },
   { immediate: true },
 );
+
+onUnmounted(() => {
+  insidePageErrorMessage.value = "";
+  showNotif.value = false;
+});
 </script>
 
 <template>
