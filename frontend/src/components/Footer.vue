@@ -70,10 +70,10 @@ defineOptions({
           <h4 class="font-bold">COMPANY</h4>
           <ul class="mt-4 text-gray-300">
             <li class="py-1">
-              <router-link :to="{ name: 'Dashboard' }">About Us</router-link>
+              <router-link :to="{ name: 'AboutUs' }">About Us</router-link>
             </li>
             <li class="py-1">
-              <router-link :to="{ name: 'Dashboard' }">Contact</router-link>
+              <router-link :to="{ name: 'ContactUs' }">Contact</router-link>
             </li>
           </ul>
         </div>

@@ -57,8 +57,8 @@ onMounted(() => {
   // split header
   const splitFirstHeader = SplitText.create(firstHeader.value, {
     ...defaultSettings,
-    type: "chars",
-    mask: "chars",
+    type: "lines",
+    mask: "lines",
   });
 
   // split text
@@ -68,7 +68,7 @@ onMounted(() => {
     mask: "lines",
   });
 
-  tl.from(splitFirstHeader.chars, anime1).from(
+  tl.from(splitFirstHeader.lines, anime1).from(
     splitFirstText.lines,
     anime2,
     "-=0.6",

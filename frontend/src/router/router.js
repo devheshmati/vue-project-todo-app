@@ -1,11 +1,13 @@
-import Home from "../views/Home.vue";
-import Login from "../views/Login.vue";
-import Register from "../views/Register.vue";
+import HomePage from "../views/pages/HomePage.vue";
+import LoginPage from "../views/pages/LoginPage.vue";
+import RegisterPage from "../views/pages/RegisterPage.vue";
 import Todos from "../views/dashboard/todos/Todos.vue";
 import CreateTodo from "../views/dashboard/todos/CreateTodo.vue";
 import Dashboard from "../views/dashboard/Dashboard.vue";
 import NotConnectionPage from "../views/errors/NotConnectionPage.vue";
 import NotFoundPage from "../views/errors/NotFoundPage.vue";
+import AboutUsPage from "../views/pages/AboutUsPage.vue";
+import ContactUsPage from "../views/pages/ContactUsPage.vue";
 import { useAuthStore } from "/stores/auth";
 
 import { createRouter, createWebHistory } from "vue-router";
@@ -15,17 +17,27 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home,
+    component: HomePage,
   },
   {
     path: "/login",
     name: "Login",
-    component: Login,
+    component: LoginPage,
   },
   {
     path: "/register",
     name: "Register",
-    component: Register,
+    component: RegisterPage,
+  },
+  {
+    path: "/about-us",
+    name: "AboutUs",
+    component: AboutUsPage,
+  },
+  {
+    path: "/contact-us",
+    name: "ContactUs",
+    component: ContactUsPage,
   },
   {
     path: "/dashboard",

@@ -1,13 +1,13 @@
 <script setup>
 import { useAuthStore } from "/stores/auth";
 import { onMounted, ref, watch, nextTick } from "vue";
-import Header from "../components/Header.vue";
-import Footer from "../components/Footer.vue";
-import HeroSection from "../components/sections/HeroSection.vue";
-import FeaturesSection from "../components/sections/FeaturesSection.vue";
-import TestimonialSection from "../components/sections/TestimonialsSection.vue";
-import ParallaxCTASection from "../components/sections/ParallaxCTASection.vue";
-import FAQSection from "../components/sections/FAQSection.vue";
+import Header from "../../components/Header.vue";
+import Footer from "../../components/Footer.vue";
+import HeroSection from "../../components/sections/HeroSection.vue";
+import FeaturesSection from "../../components/sections/FeaturesSection.vue";
+import TestimonialSection from "../../components/sections/TestimonialsSection.vue";
+import ParallaxCTASection from "../../components/sections/ParallaxCTASection.vue";
+import FAQSection from "../../components/sections/FAQSection.vue";
 import { useRoute, useRouter } from "vue-router";
 import { gsap } from "gsap";
 
