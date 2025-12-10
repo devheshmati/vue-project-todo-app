@@ -2,11 +2,14 @@
 import { onMounted, computed, ref, reactive } from "vue";
 import { useTodoStore } from "/stores/todos.js";
 import Modal from "../components/Modal.vue";
+import { useModalStore } from "/stores/modal";
 
 // Define Options
 defineOptions({
   name: "TodosListComponent",
 });
+
+const modalStore = useModalStore();
 
 const todoStore = useTodoStore();
 const filters = reactive({
@@ -15,7 +18,6 @@ const filters = reactive({
 });
 
 // this is for modal
-const isToggle = ref(false);
 const newTodoData = reactive({
   id: null,
   title: "",
@@ -27,11 +29,11 @@ function openEditModal(todo) {
   newTodoData.id = todo.id;
   newTodoData.title = todo.title;
   newTodoData.description = todo.description;
-  isToggle.value = true;
+  modalStore.isToggle = true;
 }
 
 function closeModal() {
-  isToggle.value = false;
+  modalStore.isToggle = false;
 }
 
 async function submitEdit() {
@@ -79,8 +81,8 @@ const filteredAndSortedTodos = computed(() => {
 
 <template>
   <!-- Modal -->
-  <Modal :isToggle="isToggle">
-    <form class="flex flex-col gap-3" @submit.prevent="submitEdit">
+  <Modal>
+    <form class="flex flex-col gap-3 w-full" @submit.prevent="submitEdit">
       <h2 class="text-xl font-semibold mb-2">Edit Todo</h2>
       <input
         v-model="newTodoData.title"
@@ -119,14 +121,16 @@ const filteredAndSortedTodos = computed(() => {
 
   <div
     v-if="todoStore.todosList.length > 0 && !todoStore.errorMessage"
-    class="min-w-2/5"
+    class="w-8/10 sm:w-3/4 sm:min-w-2/5 md:w-1/2"
   >
     <div class="bg-gray-800 p-4 rounded-t-lg">
       <h3 class="text-xl font-bold text-center text-white">Todo List</h3>
     </div>
     <div class="bg-gray-400 p-4 h-3/4 rounded-b-lg">
       <!-- sort section -->
-      <div class="flex justify-between my-2 p-2 bg-gray-200 rounded-xl text-sm">
+      <div
+        class="flex flex-col sm:flex-row gap-2 justify-between my-2 p-2 bg-gray-200 rounded-xl text-md sm:text-sm"
+      >
         <div>
           <label for="#todoSortByEl" class="text-gray-700">Sort by: </label>
           <select ref="todoSortByEl" v-model="filters.todoSortBy" class="">

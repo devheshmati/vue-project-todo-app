@@ -33,17 +33,17 @@ onMounted(() => {
       <h2 class="text-xl font-bold">Todos Report</h2>
 
       <div class="grid grid-cols-3 gap-4 text-center">
-        <div class="p-4 bg-blue-50 rounded">
+        <div class="p-4 bg-blue-50 rounded col-span-full sm:col-span-1">
           <div class="text-2xl font-bold text-blue-600">{{ totalTodos }}</div>
           <div class="text-sm text-gray-600">All Todos</div>
         </div>
 
-        <div class="p-4 bg-green-50 rounded">
+        <div class="p-4 bg-green-50 rounded col-span-full sm:col-span-1">
           <div class="text-2xl font-bold text-green-600">{{ doneTodos }}</div>
           <div class="text-sm text-gray-600">Completed Todo</div>
         </div>
 
-        <div class="p-4 bg-yellow-50 rounded">
+        <div class="p-4 bg-yellow-50 rounded col-span-full sm:col-span-1">
           <div class="text-2xl font-bold text-yellow-600">
             {{ pendingTodos }}
           </div>

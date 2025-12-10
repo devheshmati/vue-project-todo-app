@@ -73,10 +73,10 @@ onMounted(() => {
   <div class="flex justify-center items-center h-screen w-full">
     <form
       @submit.prevent="handleCreateTodo"
-      class="bg-gray-800 w-1/2 mx-auto p-8 rounded-lg"
+      class="bg-gray-800 w-8/10 sm:w-1/2 mx-auto p-4 sm:p-8 rounded-lg"
     >
       <div class="m-4">
-        <h3 class="text-center text-gray-200 text-2xl font-bold">
+        <h3 class="text-center text-gray-200 text-md sm:text-2xl font-bold">
           Create Task
         </h3>
       </div>
@@ -114,7 +114,6 @@ onMounted(() => {
           v-model.trim="form.description"
           class="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-300 resize-none"
           placeholder="Enter description..."
-          rows="4"
           @blur="v$.description.$touch"
         ></textarea>
         <div v-if="v$.description.$error">

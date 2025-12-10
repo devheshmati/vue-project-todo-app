@@ -15,7 +15,7 @@ defineOptions({
           class="object-cover w-full h-full rounded-xl"
         />
         <div
-          class="absolute top-5 left-1/2 -translate-x-1/2 text-amber-100 bg-black/80 px-2 py-1 text-sm rounded-xl"
+          class="absolute top-5 left-1/2 -translate-x-1/2 text-amber-100 bg-black/80 px-2 py-1 text-sm rounded-xl text-nowrap"
         >
           Organizing Tasks, easy!
         </div>
@@ -24,9 +24,9 @@ defineOptions({
       <div
         class="text-amber-100/90 grid grid-cols-3 w-10/12 mx-auto text-sm mt-1"
       >
-        <div class="flex justify-start">Project for productivity</div>
-        <div class="flex justify-center">Best Manage Todo</div>
-        <div class="flex justify-end">
+        <div class="sm:flex justify-start hidden">Project for productivity</div>
+        <div class="sm:flex justify-center hidden">Best Manage Todo</div>
+        <div class="sm:flex justify-end hidden">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -45,10 +45,10 @@ defineOptions({
       </div>
 
       <div class="text-amber-100 w-10/12 mx-auto grid grid-cols-2">
-        <div>
-          <h1 class="mt-5 text-3xl font-bold">About Us</h1>
+        <div class="col-span-full sm:col-span-1">
+          <h1 class="mt-5 text-xl sm:text-3xl font-bold">About Us</h1>
         </div>
-        <div>
+        <div class="col-span-full sm:col-span-1">
           <p class="mt-5">
             Your simple, fast, and reliable tool for organizing tasks and
             boosting productivity every day. Stay focused, get more done, and
@@ -56,7 +56,7 @@ defineOptions({
           </p>
           <RouterLink
             to="/"
-            class="text-blue-400 hover:text-blue-300 inline-block mt-2 font-bold text-sm"
+            class="text-blue-400 hover:text-blue-300 inline-block mt-2 mb-6 font-bold text-sm"
             >-> Return To Home</RouterLink
           >
         </div>

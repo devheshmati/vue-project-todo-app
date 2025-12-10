@@ -16,8 +16,8 @@ defineOptions({
 </script>
 <template>
   <div>
-    <Sidebar />
-    <Main>
+    <Sidebar class="z-99" />
+    <Main class="">
       <DashboardReport v-if="route.path === '/dashboard'" />
       <router-view />
     </Main>

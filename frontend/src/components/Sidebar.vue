@@ -1,14 +1,18 @@
 <script setup>
-// import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useSidebarTogglerStore } from "/stores/sidebarToggler.js";
 import { useRouter } from "vue-router";
-import { useAuthStore } from "/stores/auth.js";
+import { useAuthStore } from "/stores/auth";
+import { useModalStore } from "/stores/modal";
+import { gsap } from "gsap";
 
 // define options
 defineOptions({
   name: "Sidebar",
 });
 
+const modalStore = useModalStore();
+const sidebar = ref(null);
 const router = useRouter();
 const authStore = useAuthStore();
 const togglerStore = useSidebarTogglerStore();
@@ -17,11 +21,29 @@ async function logout() {
   authStore.logOut();
   router.push("/");
 }
+
+watch(
+  () => modalStore.isToggle,
+  (newVal) => {
+    if (newVal) {
+      gsap.to(sidebar.value, {
+        xPercent: -110,
+        ease: "power.in",
+      });
+    } else {
+      gsap.to(sidebar.value, {
+        xPercent: 0,
+        ease: "power.out",
+      });
+    }
+  },
+);
 </script>
 
 <template>
   <div
-    :class="togglerStore.isToggle ? 'w-[300px]' : 'w-[50px]'"
+    ref="sidebar"
+    :class="togglerStore.isToggle ? 'w-full sm:w-[300px]' : 'w-[50px]'"
     class="sidebar fixed left-0 top-0 bg-[rgba(0,0,0,1)] h-screen overflow-hidden z-10"
   >
     <ul class="flex flex-col mt-10">
