@@ -8,20 +8,11 @@ defineOptions({
   name: "TodosListComponent",
 });
 
-defineProps({
-  data: {
-    type: Array,
-    required: true,
-    default: () => [],
-  },
-  errorMessage: {
-    type: String,
-    required: true,
-    default: "",
-  },
-});
-
 const todoStore = useTodoStore();
+const filters = reactive({
+  todoStatus: "none",
+  todoSortBy: "none",
+});
 
 // this is for modal
 const isToggle = ref(false);
@@ -51,6 +42,39 @@ async function submitEdit() {
 
   closeModal();
 }
+
+const filteredAndSortedTodos = computed(() => {
+  let list = [...todoStore.todosList];
+
+  // اول فیلتر اعمال می‌شه
+  if (filters.todoStatus === "unfinished") {
+    list = list.filter((todo) => !todo.is_done);
+  } else if (filters.todoStatus === "finished") {
+    list = list.filter((todo) => todo.is_done);
+  } else if (filters.todoStatus === "none") {
+    list = list.filter((todo) => todo);
+  }
+  // اگر 'all' بود، هیچ فیلتری اعمال نمی‌شه
+
+  // بعد سورت اعمال می‌شه
+  list.sort((a, b) => {
+    if (filters.todoSortBy === "unfinished-first") {
+      return a.is_done === b.is_done ? 0 : a.is_done ? 1 : -1;
+    }
+    if (filters.todoSortBy === "finished-first") {
+      return a.is_done === b.is_done ? 0 : a.is_done ? -1 : 1;
+    }
+    if (filters.todoSortBy === "newest") {
+      return b.id - a.id;
+    }
+    if (filters.todoSortBy === "oldest") {
+      return a.id - b.id;
+    }
+    return 0; // default یا هیچ سورتی
+  });
+
+  return list;
+});
 </script>
 
 <template>
@@ -84,23 +108,50 @@ async function submitEdit() {
   </Modal>
 
   <div
-    v-if="!data.length && !errorMessage"
+    v-if="!todoStore.todosList.length && !todoStore.errorMessage"
     class="bg-orange-800 text-white p-4"
   >
     There are no tasks in list.
   </div>
-  <div v-if="errorMessage" class="bg-red-800 text-white p-4">
-    {{ errorMessage }}
+  <div v-if="todoStore.errorMessage" class="bg-red-800 text-white p-4">
+    {{ todoStore.errorMessage }}
   </div>
 
-  <div v-if="data.length > 0 && !errorMessage" class="min-w-2/5">
+  <div
+    v-if="todoStore.todosList.length > 0 && !todoStore.errorMessage"
+    class="min-w-2/5"
+  >
     <div class="bg-gray-800 p-4 rounded-t-lg">
       <h3 class="text-xl font-bold text-center text-white">Todo List</h3>
     </div>
     <div class="bg-gray-400 p-4 h-3/4 rounded-b-lg">
+      <!-- sort section -->
+      <div class="flex justify-between my-2 p-2 bg-gray-200 rounded-xl text-sm">
+        <div>
+          <label for="#todoSortByEl" class="text-gray-700">Sort by: </label>
+          <select ref="todoSortByEl" v-model="filters.todoSortBy" class="">
+            <option value="none" selected disabled>Not Selected</option>
+            <option value="unfinished-first">Unfinished first</option>
+            <option value="finished-first">Finished first</option>
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="#todoStatus" class="text-gray-700"
+            >Is Done Filter:
+          </label>
+          <select ref="todoStatusEl" v-model="filters.todoStatus" class="">
+            <option value="none" selected>None</option>
+            <option value="unfinished">Unfinished</option>
+            <option value="finished">Finished</option>
+          </select>
+        </div>
+      </div>
       <ul class="flex flex-col gap-4 mx-auto overflow-y-scroll h-[400px]">
         <li
-          v-for="todo in data"
+          v-for="todo in filteredAndSortedTodos"
           :key="todo.id"
           class="grid grid-cols-6 p-4 w-full rounded-lg"
           :class="todo.is_done ? 'bg-gray-300' : 'bg-white'"

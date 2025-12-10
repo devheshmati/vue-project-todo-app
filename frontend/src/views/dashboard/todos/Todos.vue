@@ -39,11 +39,7 @@ onMounted(async () => {
   <div class="flex flex-cols justify-center items-center h-screen">
     <div v-if="isLoading">Loading ...</div>
     <div v-else-if="errorMessage">{{ errorMessage }}</div>
-    <TodosList
-      v-else-if="todoStore.todosList"
-      :data="todoStore.todosList"
-      :errorMessage="todoStore.errorMessage"
-    />
+    <TodosList v-else-if="todoStore.todosList" />
     <div v-else>No todos, found!</div>
   </div>
 </template>
