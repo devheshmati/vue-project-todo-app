@@ -41,12 +41,16 @@ onMounted(() => {
     ease: "power.out",
     duration: 0.8,
   })
-    .from(mainHeader.value, {
-      xPercent: -110,
-      autoAlpha: 0,
-      ease: "expo.out",
-      duration: 1.5,
-    })
+    .from(
+      mainHeader.value,
+      {
+        xPercent: -110,
+        autoAlpha: 0,
+        ease: "expo.out",
+        duration: 1.5,
+      },
+      "-=1",
+    )
     .from(
       miniCards.value,
       {

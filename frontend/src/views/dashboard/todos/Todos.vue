@@ -36,10 +36,12 @@ onMounted(async () => {
 // fetch todos
 </script>
 <template>
-  <div class="flex flex-cols justify-center items-center h-screen">
-    <div v-if="isLoading">Loading ...</div>
-    <div v-else-if="errorMessage">{{ errorMessage }}</div>
-    <TodosList v-else-if="todoStore.todosList" />
-    <div v-else>No todos, found!</div>
+  <div>
+    <main class="w-full h-screen flex justify-center items-center">
+      <div v-if="isLoading">Loading ...</div>
+      <div v-else-if="errorMessage">{{ errorMessage }}</div>
+      <TodosList v-else-if="todoStore.todosList" />
+      <div v-else>No todos, found!</div>
+    </main>
   </div>
 </template>
