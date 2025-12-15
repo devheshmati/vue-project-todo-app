@@ -53,7 +53,7 @@ onMounted(() => {
   const tl = gsap.timeline({
     scrollTrigger: {
       trigger: mainHeader.value,
-      start: "top 70%",
+      start: "top 90%",
       end: "bottom top",
       toggleActions: "play none none reverse",
     },
@@ -92,7 +92,7 @@ onMounted(() => {
   const tl2 = gsap.timeline({
     scrollTrigger: {
       trigger: col2Header.value,
-      start: "top 70%",
+      start: "top 90%",
       end: "bottom top",
       toggleActions: "play none none reverse",
     },
@@ -123,7 +123,7 @@ onMounted(() => {
   const tl3 = gsap.timeline({
     scrollTrigger: {
       trigger: col3Header.value,
-      start: "top 70%",
+      start: "top 90%",
       end: "bottom top",
       toggleActions: "play none none reverse",
     },
@@ -154,7 +154,7 @@ onMounted(() => {
   const tl4 = gsap.timeline({
     scrollTrigger: {
       trigger: col4Header.value,
-      start: "top 70%",
+      start: "top 90%",
       end: "bottom top",
       toggleActions: "play none none reverse",
     },
@@ -206,7 +206,7 @@ onMounted(() => {
       each: 0.1,
     },
     scrollTrigger: {
-      trigger: socialLink.value,
+      trigger: socialLinkItems.value[0],
       start: "top bottom",
       end: "bottom top",
       toggleActions: "play none none reverse",

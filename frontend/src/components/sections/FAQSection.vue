@@ -141,7 +141,7 @@ onMounted(() => {
     },
     scrollTrigger: {
       trigger: fqsEl.value[0],
-      start: "top 50%",
+      start: "top 60%",
       end: "bottom top",
       toggleActions: "play none none reverse",
     },
