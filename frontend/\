@@ -3,8 +3,6 @@ import { ref, reactive, onMounted } from "vue";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
-
 defineOptions({
   name: "ContactUsPage",
 });
@@ -33,8 +31,6 @@ const socialLinksEl = ref([]);
 const mainHeader2 = ref(null);
 const contactEmail2 = ref(null);
 const socialLinksEl2 = ref([]);
-const homeLink = ref(null);
-const homeLink2 = ref(null);
 
 onMounted(() => {
   gsap.from(mainImage.value, {
@@ -45,15 +41,7 @@ onMounted(() => {
     duration: 0.8,
   });
 
-  gsap.from([mainHeader.value, contactEmail.value, socialLinksEl.value], {
-    delay: 0.8,
-    yPercent: 50,
-    autoAlpha: 0,
-    duration: 1.4,
-    ease: "expo.out",
-    stagger: {
-      each: 0.2,
-    },
+  const tl = gsap.timeline({
     scrollTrigger: {
       trigger: mainHeader.value,
       start: "top 70%",
@@ -62,7 +50,7 @@ onMounted(() => {
     },
   });
 
-  gsap.from([mainHeader2.value, contactEmail2.value, socialLinksEl2.value], {
+  tl.from([mainHeader.value, contactEmail.value, socialLinksEl.value], {
     delay: 0.8,
     yPercent: 50,
     autoAlpha: 0,
@@ -71,33 +59,25 @@ onMounted(() => {
     stagger: {
       each: 0.2,
     },
+  });
+
+  const tl2 = gsap.timeline({
     scrollTrigger: {
       trigger: mainHeader2.value,
-      start: "top 90%",
+      start: "top 70%",
       end: "bottom top",
       toggleAction: "play none none reverse",
     },
   });
 
-  // for home link 1
-  gsap.from(homeLink.value, {
-    delay: 1.3,
-    xPercent: -50,
+  tl.from([mainHeader2.value, contactEmail2.value, socialLinksEl2.value], {
+    delay: 0.8,
+    yPercent: 50,
     autoAlpha: 0,
+    duration: 1.4,
     ease: "expo.out",
-  });
-
-  // for home link 2
-  gsap.from(homeLink2.value, {
-    delay: 1.3,
-    xPercent: -50,
-    autoAlpha: 0,
-    ease: "expo.out",
-    scrollTrigger: {
-      trigger: mainHeader2.value,
-      start: "top 90%",
-      end: "bottom top",
-      toggleAction: "play none none reverse",
+    stagger: {
+      each: 0.2,
     },
   });
 });
@@ -115,9 +95,7 @@ onMounted(() => {
           class="h-8/10 w-full sm:h-full object-[25%] object-cover"
         />
         <div class="absolute left-7/12 top-5/12 hidden sm:block">
-          <h1 ref="mainHeader" class="text-xl md:text-3xl font-bold">
-            Contact Us Page
-          </h1>
+          <h1 ref="mainHeader" class="text-3xl font-bold">Contact Us Page</h1>
           <div ref="contactEmail">todoinfo@mail.com</div>
 
           <ul class="flex gap-2 mt-4">
@@ -173,12 +151,11 @@ onMounted(() => {
             </li>
           </ul>
         </div>
-        <div
-          ref="homeLink"
+        <RouterLink
+          to="/"
           class="text-gray-500 hover:text-blue-500 mt-4 font-bold text-lg absolute bottom-5 right-5 hidden sm:inline-block"
+          >-> Return To Home</RouterLink
         >
-          <RouterLink class="inline-block" to="/">-> Return To Home</RouterLink>
-        </div>
       </div>
 
       <div class="sm:hidden w-8/10 mt-5">
@@ -238,7 +215,7 @@ onMounted(() => {
           </li>
         </ul>
       </div>
-      <div ref="homeLink2" class="w-8/10 text-start px-3">
+      <div class="w-8/10 text-start px-3">
         <RouterLink
           to="/"
           class="text-gray-500 hover:text-blue-500 my-4 font-bold text-md block sm:hidden"

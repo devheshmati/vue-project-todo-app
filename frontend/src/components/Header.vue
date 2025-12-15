@@ -3,6 +3,7 @@ import { useRouter } from "vue-router";
 import { ref, onMounted, onUnmounted, computed, watch } from "vue";
 import { useAuthStore } from "/stores/auth";
 import { useHeaderStore } from "/stores/header";
+import { gsap } from "gsap";
 
 // Define Options
 defineOptions({
@@ -13,6 +14,7 @@ const router = useRouter();
 const authStore = useAuthStore();
 const headerStore = useHeaderStore();
 const mobileNavbar = ref(null);
+const mainHeader = ref(null);
 
 const isAuthenticate = computed(() => {
   return !!authStore.userToken;
@@ -35,7 +37,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <header class="bg-black/90 z-100 text-white shadow-lg">
+  <header class="bg-black/90 z-100 text-white shadow-lg" ref="mainHeader">
     <!-- mobile navbar -->
     <div
       v-if="headerStore.isToggler"

@@ -2,23 +2,93 @@
 import { gsap } from "gsap";
 import { SplitText } from "gsap/SplitText";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ref, onMounted } from "vue";
 
 defineOptions({
   name: "FeaturesSection",
 });
 
 gsap.registerPlugin(SplitText, ScrollTrigger);
+
+const mainFrame = ref(null);
+const mainHeader = ref(null);
+const mainContext = ref(null);
+const allFeatureCard = ref([]);
+
+onMounted(() => {
+  // mian header and main context
+  const splitMainHeader = SplitText.create(mainHeader.value, {
+    type: "words",
+    mask: "words",
+  });
+
+  const splitMainContext = SplitText.create(mainContext.value, {
+    type: "chars",
+    mask: "chars",
+  });
+
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: mainFrame.value,
+      start: "top 70%",
+      end: "bottom top",
+      toggleActions: "play none none reverse",
+    },
+  });
+
+  tl.from(splitMainHeader.words, {
+    yPercent: 100,
+    autoAlpha: 0,
+    ease: "back.out",
+    stagger: {
+      amount: 0.4,
+    },
+  }).from(splitMainContext.chars, {
+    yPercent: 100,
+    autoAlpha: 0,
+    ease: "back.out",
+    stagger: {
+      amount: 0.4,
+      from: "random",
+    },
+  });
+
+  // feature cards
+  allFeatureCard.value = gsap.utils.toArray(".feature-card");
+  allFeatureCard.value.forEach((e, i) => {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: e,
+        start: "top 60%",
+        end: "bottom top",
+        toggleActions: "play none none reverse",
+      },
+    });
+    tl.from(e, {
+      delay: 0.3 * i,
+      duration: 0.6,
+      scale: 1.2,
+      autoAlpha: 0,
+      ease: "power3.out",
+    });
+  });
+});
 </script>
 
 <template>
   <section id="features" class="py-16 sm:py-24 bg-gray-200 text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <div
+      ref="mainFrame"
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
+    >
       <h2
+        ref="mainHeader"
         class="text-4xl sm:text-5xl text-slate-800 font-extrabold tracking-tight mb-6"
       >
         Simplify Your Life, One Task at a Time
       </h2>
       <p
+        ref="mainContext"
         class="text-xl sm:text-2xl font-light text-slate-800 opacity-90 mb-12 max-w-3xl mx-auto"
       >
         TodoApp helps you organize your day, boost productivity, and achieve
@@ -28,7 +98,7 @@ gsap.registerPlugin(SplitText, ScrollTrigger);
       <div class="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-16">
         <!-- Feature 1 -->
         <div
-          class="flex flex-col items-center p-6 bg-white bg-opacity-10 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300"
+          class="feature-card flex flex-col items-center p-6 bg-white bg-opacity-10 rounded-xl shadow-lg"
         >
           <div class="flex-shrink-0 mb-4">
             <svg
@@ -57,7 +127,7 @@ gsap.registerPlugin(SplitText, ScrollTrigger);
 
         <!-- Feature 2 -->
         <div
-          class="flex flex-col items-center p-6 bg-white bg-opacity-10 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300"
+          class="feature-card flex flex-col items-center p-6 bg-white bg-opacity-10 rounded-xl shadow-lg"
         >
           <div class="flex-shrink-0 mb-4">
             <svg
@@ -86,7 +156,7 @@ gsap.registerPlugin(SplitText, ScrollTrigger);
 
         <!-- Feature 3 -->
         <div
-          class="flex flex-col items-center p-6 bg-white bg-opacity-10 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300"
+          class="feature-card flex flex-col items-center p-6 bg-white bg-opacity-10 rounded-xl shadow-lg"
         >
           <div class="flex-shrink-0 mb-4">
             <svg

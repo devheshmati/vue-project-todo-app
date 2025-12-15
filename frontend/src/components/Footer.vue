@@ -27,7 +27,10 @@ defineOptions({
         <!--col 1-->
         <div class="flex flex-col gap-2">
           <!-- logo -->
-          <router-link :to="{ name: 'Home' }" class="flex gap-1 items-center">
+          <router-link
+            :to="{ name: 'Home' }"
+            class="flex flex-col md:flex-row gap-1 items-start md:items-center"
+          >
             <span>
               <img
                 src="/logos/todo-logo.png"

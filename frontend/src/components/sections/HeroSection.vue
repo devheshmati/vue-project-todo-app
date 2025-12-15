@@ -14,6 +14,8 @@ defineOptions({
 const firstHeader = ref(null);
 const firstText = ref(null);
 const mainImage = ref(null);
+const btn1 = ref(null);
+const btn2 = ref(null);
 
 const defaultSettings = {
   wordsClass: "word",
@@ -68,9 +70,12 @@ onMounted(() => {
     mask: "lines",
   });
 
-  tl.from(splitFirstHeader.lines, anime1).from(
+  tl.from(splitFirstHeader.lines, {
+    ...anime1,
+    onComplete: () => splitFirstHeader.revert(),
+  }).from(
     splitFirstText.lines,
-    anime2,
+    { ...anime2, onComplete: () => splitFirstText.revert() },
     "-=0.6",
   );
 
@@ -79,8 +84,21 @@ onMounted(() => {
     splitFirstText.revert();
   });
 
-  gsap.from("#first-image", {
+  gsap.from(mainImage.value, {
+    delay: 0.5,
     xPercent: 100,
+    autoAlpha: 0,
+    ease: "power.out",
+  });
+
+  gsap.from([btn1.value, btn2.value], {
+    autoAlpha: 0,
+    yPercent: 110,
+    delay: 0.7,
+    duration: 0.4,
+    stagger: {
+      each: 0.1,
+    },
   });
 });
 </script>
@@ -119,14 +137,17 @@ onMounted(() => {
         <div
           class="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 animate-fade-in-up delay-400"
         >
-          <router-link
-            to="/dashboard"
-            class="bg-white text-cyan-700 hover:bg-cyan-100 font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105"
-          >
-            Get Started - It's Free!
-          </router-link>
+          <div ref="btn1">
+            <router-link
+              to="/dashboard"
+              class="inline-block bg-white text-cyan-700 hover:bg-cyan-100 font-bold py-3 px-8 rounded-full shadow-lg"
+            >
+              Get Started - It's Free!
+            </router-link>
+          </div>
           <button
-            class="border border-white text-white bg-transparent hover:bg-slate-200 hover:text-cyan-700 font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105"
+            ref="btn2"
+            class="border border-white text-white bg-transparent hover:bg-slate-200 hover:text-cyan-700 font-bold py-3 px-8 rounded-full shadow-lg"
           >
             Learn More
           </button>
@@ -138,10 +159,10 @@ onMounted(() => {
         <!-- Placeholder for a compelling app screenshot or illustration -->
         <!-- I'll generate an image of a clean, modern todo app interface on a device -->
         <img
-          id="first-image"
+          ref="mainImage"
           src="/images/hero-section-image.webp"
           alt="Todo App Interface"
-          class="rounded-lg shadow-2xl w-full max-w-md lg:max-w-lg transform hover:scale-105 transition duration-500 ease-in-out animate-fade-in-right"
+          class="rounded-lg shadow-2xl w-full max-w-md lg:max-w-lg"
         />
       </div>
     </div>

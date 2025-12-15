@@ -1,92 +1,165 @@
-<script>
-// UPDATED: Import GSAP
-import gsap from "gsap";
+<script setup>
+import { ref, reactive, onMounted } from "vue";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
 
-export default {
+gsap.registerPlugin(ScrollTrigger, SplitText);
+
+defineOptions({
   name: "FAQSection",
-  data() {
-    return {
-      openQuestionIndex: null,
-      faqs: [
-        {
-          question: "Is this todo app free to use?",
-          answer:
-            "Yes! Our app offers a completely free plan that includes all essential features like task management, reminders, and progress tracking. We also offer a premium plan for advanced features.",
-        },
-        {
-          question: "Can I access my tasks on multiple devices?",
-          answer:
-            "Absolutely. Your tasks are synced automatically across all your devices—phone, tablet, and desktop. Just log in to your account, and all your information will be right there.",
-        },
-        {
-          question: "How do 'Smart Reminders' work?",
-          answer:
-            "Smart Reminders are more than just a notification. You can set location-based reminders (e.g., 'remind me when I get home') or set recurring tasks that adapt to your schedule.",
-        },
-        {
-          question: "Can I collaborate with my team on this app?",
-          answer:
-            "Yes! Our premium plan includes features for team collaboration, such as shared projects, task assignments, and team member comments. You can easily manage your group projects.",
-        },
-      ],
-    };
+});
+
+const mainHeader = ref(null);
+const mainContext = ref(null);
+
+const openQuestionIndex = ref(null);
+const faqs = reactive([
+  {
+    question: "Is this todo app free to use?",
+    answer:
+      "Yes! Our app offers a completely free plan that includes all essential features like task management, reminders, and progress tracking. We also offer a premium plan for advanced features.",
   },
-  methods: {
-    toggleQuestion(index) {
-      if (this.openQuestionIndex === index) {
-        this.openQuestionIndex = null;
-      } else {
-        this.openQuestionIndex = index;
-      }
-    },
-
-    // --- UPDATED: GSAP Transition Hooks ---
-
-    onBeforeEnter(el) {
-      // Set the initial state: collapsed and transparent
-      gsap.set(el, {
-        height: 0,
-        opacity: 0,
-      });
-    },
-
-    onEnter(el, done) {
-      // Animate to the natural 'auto' height and full opacity
-      gsap.to(el, {
-        duration: 0.5,
-        height: "auto",
-        opacity: 1,
-        ease: "power3.out",
-        onComplete: () => {
-          // After animation, set height to 'auto' for responsiveness
-          gsap.set(el, { height: "auto" });
-          done(); // Signal to Vue that the animation is complete
-        },
-      });
-    },
-
-    onLeave(el, done) {
-      // Animate back to the collapsed state
-      gsap.to(el, {
-        duration: 0.4,
-        height: 0,
-        opacity: 0,
-        ease: "power3.in",
-        onComplete: done, // Signal to Vue that the animation is complete
-      });
-    },
+  {
+    question: "Can I access my tasks on multiple devices?",
+    answer:
+      "Absolutely. Your tasks are synced automatically across all your devices—phone, tablet, and desktop. Just log in to your account, and all your information will be right there.",
   },
-};
+  {
+    question: "How do 'Smart Reminders' work?",
+    answer:
+      "Smart Reminders are more than just a notification. You can set location-based reminders (e.g., 'remind me when I get home') or set recurring tasks that adapt to your schedule.",
+  },
+  {
+    question: "Can I collaborate with my team on this app?",
+    answer:
+      "Yes! Our premium plan includes features for team collaboration, such as shared projects, task assignments, and team member comments. You can easily manage your group projects.",
+  },
+]);
+
+const fqsEl = ref([]);
+
+function toggleQuestion(index) {
+  if (openQuestionIndex.value === index) {
+    openQuestionIndex.value = null;
+  } else {
+    openQuestionIndex.value = index;
+  }
+}
+
+// --- UPDATED: GSAP Transition Hooks ---
+
+function onBeforeEnter(el) {
+  // Set the initial state: collapsed and transparent
+  gsap.set(el, {
+    height: 0,
+    opacity: 0,
+  });
+}
+
+function onEnter(el, done) {
+  // Animate to the natural 'auto' height and full opacity
+  gsap.to(el, {
+    duration: 0.5,
+    height: "auto",
+    opacity: 1,
+    ease: "power3.out",
+    onComplete: () => {
+      // After animation, set height to 'auto' for responsiveness
+      gsap.set(el, { height: "auto" });
+      done(); // Signal to Vue that the animation is complete
+    },
+  });
+}
+
+function onLeave(el, done) {
+  // Animate back to the collapsed state
+  gsap.to(el, {
+    duration: 0.4,
+    height: 0,
+    opacity: 0,
+    ease: "power3.in",
+    onComplete: done, // Signal to Vue that the animation is complete
+  });
+}
+
+onMounted(() => {
+  // get list of faqs
+  fqsEl.value = gsap.utils.toArray(".fq-item");
+
+  // main header and context split
+  const splitMainHeader = SplitText.create(mainHeader.value, {
+    type: "lines",
+    mask: "lines",
+  });
+  const splitMainContext = SplitText.create(mainContext.value, {
+    type: "lines",
+    mask: "lines",
+  });
+
+  // main header animation
+  gsap.from(splitMainHeader.lines, {
+    yPercent: 110,
+    autoAlpha: 0,
+    ease: "back.out",
+    duration: 0.8,
+    stagger: {
+      each: 0.2,
+    },
+    scrollTrigger: {
+      trigger: splitMainHeader.lines[0],
+      start: "top 60%",
+      end: "bottom top",
+      toggleActions: "play none none reverse",
+    },
+  });
+
+  // main context animation
+  gsap.from(splitMainContext.lines, {
+    yPercent: 110,
+    autoAlpha: 0,
+    ease: "expo.out",
+    duration: 2,
+    stagger: {
+      each: 0.2,
+    },
+    scrollTrigger: {
+      trigger: splitMainContext.lines[0],
+      start: "top 60%",
+      end: "bottom top",
+      toggleActions: "play none none reverse",
+    },
+  });
+
+  // fq-item animatinos
+  gsap.from(fqsEl.value, {
+    xPercent: -110,
+    autoAlpha: 0,
+    ease: "back.out",
+    stagger: {
+      each: 0.1,
+    },
+    scrollTrigger: {
+      trigger: fqsEl.value[0],
+      start: "top 50%",
+      end: "bottom top",
+      toggleActions: "play none none reverse",
+    },
+  });
+});
 </script>
 
 <template>
   <section id="faq" class="bg-slate-900 py-16 sm:py-24 text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="max-w-3xl mx-auto text-center">
-        <h2 class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-4">
+        <h2
+          ref="mainHeader"
+          class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-4"
+        >
           Frequently Asked Questions
         </h2>
-        <p class="text-xl text-gray-300 opacity-90">
+        <p ref="mainContext" class="text-xl text-gray-300 opacity-90">
           Have questions? We've got answers. If you can't find what you're
           looking for, feel free to contact us.
         </p>
@@ -94,7 +167,7 @@ export default {
 
       <div class="mt-16 max-w-3xl mx-auto">
         <div class="divide-y divide-slate-700">
-          <div v-for="(faq, index) in faqs" :key="index">
+          <div v-for="(faq, index) in faqs" :key="index" class="fq-item">
             <button
               @click="toggleQuestion(index)"
               class="flex justify-between items-center w-full text-left py-6"

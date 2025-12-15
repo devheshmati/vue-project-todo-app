@@ -3,14 +3,20 @@ import { onMounted, computed, ref, reactive } from "vue";
 import { useTodoStore } from "/stores/todos.js";
 import Modal from "../components/Modal.vue";
 import { useModalStore } from "/stores/modal";
+import { gsap } from "gsap";
 
 // Define Options
 defineOptions({
   name: "TodosListComponent",
 });
 
-const modalStore = useModalStore();
+const mainFrame = ref(null);
+const mainHeader = ref(null);
+const mainSortFrame = ref(null);
+const mainTodoList = ref(null);
+const todoItems = ref([]);
 
+const modalStore = useModalStore();
 const todoStore = useTodoStore();
 const filters = reactive({
   todoStatus: "none",
@@ -77,6 +83,41 @@ const filteredAndSortedTodos = computed(() => {
 
   return list;
 });
+
+onMounted(() => {
+  const tl = gsap.timeline();
+
+  tl.from(mainFrame.value, {
+    autoAlpha: 0,
+    ease: "power.out",
+    delay: 0.6,
+    duration: 0.6,
+  })
+    .from(mainHeader.value, {
+      autoAlpha: 0,
+      xPercent: -50,
+      ease: "expo.out",
+      duration: 0.4,
+    })
+    .from(mainSortFrame.value, {
+      yPercent: 50,
+      autoAlpha: 0,
+      ease: "expo.out",
+      duration: 1,
+    })
+    .from(
+      todoItems.value,
+      {
+        xPercent: -110,
+        autoAlpha: 0,
+        ease: "expo.out",
+        stagger: {
+          each: 0.1,
+        },
+      },
+      "-=0.5",
+    );
+});
 </script>
 
 <template>
@@ -120,15 +161,19 @@ const filteredAndSortedTodos = computed(() => {
   </div>
 
   <div
+    ref="mainFrame"
     v-if="todoStore.todosList.length > 0 && !todoStore.errorMessage"
-    class="w-8/10 sm:w-3/4 sm:min-w-2/5 md:w-1/2"
+    class="w-8/10 sm:w-3/4 sm:min-w-2/5 md:w-1/2 overflow-hidden"
   >
     <div class="bg-gray-800 p-4 rounded-t-lg">
-      <h3 class="text-xl font-bold text-center text-white">Todo List</h3>
+      <h3 ref="mainHeader" class="text-xl font-bold text-center text-white">
+        Todo List
+      </h3>
     </div>
     <div class="bg-gray-400 p-4 h-3/4 rounded-b-lg">
       <!-- sort section -->
       <div
+        ref="mainSortFrame"
         class="flex flex-col sm:flex-row gap-2 justify-between my-2 p-2 bg-gray-200 rounded-xl text-md sm:text-sm"
       >
         <div>
@@ -153,8 +198,12 @@ const filteredAndSortedTodos = computed(() => {
           </select>
         </div>
       </div>
-      <ul class="flex flex-col gap-4 mx-auto overflow-y-scroll h-[400px]">
+      <ul
+        ref="mainTodoList"
+        class="flex flex-col gap-4 mx-auto overflow-y-scroll h-[400px]"
+      >
         <li
+          ref="todoItems"
           v-for="todo in filteredAndSortedTodos"
           :key="todo.id"
           class="grid grid-cols-6 p-4 w-full rounded-lg"

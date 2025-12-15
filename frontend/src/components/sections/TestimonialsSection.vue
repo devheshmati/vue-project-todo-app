@@ -1,7 +1,91 @@
-<script>
-export default {
+<script setup>
+import { ref, onMounted } from "vue";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
+
+defineOptions({
   name: "TestimonialsSection",
-};
+});
+
+const mainHeader = ref(null);
+const mainContext = ref(null);
+const allCards = ref([]);
+
+onMounted(() => {
+  allCards.value = gsap.utils.toArray(".testimonial-card");
+
+  // split main header and main context
+  const splitMainHeader = SplitText.create(mainHeader.value, {
+    type: "words",
+    mask: "words",
+  });
+  const splitMainContext = SplitText.create(mainContext.value, {
+    type: "lines",
+    mask: "lines",
+  });
+
+  // main header
+  gsap.from(splitMainHeader.words, {
+    yPercent: 110,
+    autoAlpha: 0,
+    ease: "expo.out",
+    stagger: {
+      amount: 0.5,
+    },
+    scrollTrigger: {
+      trigger: splitMainHeader.words[0],
+      start: "top 70%",
+      end: "bottom top",
+      toggleActions: "play none none reverse",
+    },
+  });
+
+  // main context
+  gsap.from(splitMainContext.lines, {
+    yPercent: 110,
+    autoAlpha: 0,
+    ease: "expo.out",
+    duration: 2,
+    stagger: {
+      each: 0.4,
+    },
+    scrollTrigger: {
+      trigger: splitMainContext.lines[0],
+      start: "top 70%",
+      end: "bottom top",
+      toggleActions: "play none none reverse",
+    },
+  });
+
+  // cards
+  allCards.value.forEach((element, index) => {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: element,
+        start: "top 70%",
+        end: "bottom top",
+        toggleActions: "play none none reverse",
+      },
+    });
+
+    tl.from(element.querySelector("img"), {
+      delay: 0.3 * index,
+      yPercent: -110,
+      autoAlpha: 0,
+      ease: "power3.out",
+      duration: 0.5,
+    }).from(element.querySelectorAll("p"), {
+      yPercent: 110,
+      autoAlpha: 0,
+      ease: "back3.out",
+      duration: 0.5,
+      stagger: {
+        each: 0.2,
+      },
+    });
+  });
+});
 </script>
 
 <template>
@@ -9,11 +93,13 @@ export default {
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-12">
         <h2
+          ref="mainHeader"
           class="text-4xl sm:text-5xl text-slate-200 font-extrabold tracking-tight mb-4"
         >
           What Our Users Are Saying
         </h2>
         <p
+          ref="mainContext"
           class="text-xl sm:text-2xl font-light text-slate-200 max-w-3xl mx-auto"
         >
           Hear from real people who are transforming their productivity with
@@ -24,7 +110,7 @@ export default {
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <!-- Testimonial 1 -->
         <div
-          class="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center text-center transform hover:scale-105 transition-all duration-300"
+          class="testimonial-card bg-white rounded-xl shadow-lg p-8 flex flex-col items-center text-center overflow-hidden"
         >
           <img
             src="https://randomuser.me/api/portraits/men/32.jpg"
@@ -42,7 +128,7 @@ export default {
 
         <!-- Testimonial 2 -->
         <div
-          class="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center text-center transform hover:scale-105 transition-all duration-300"
+          class="testimonial-card bg-white rounded-xl shadow-lg p-8 flex flex-col items-center text-center overflow-hidden"
         >
           <img
             src="https://randomuser.me/api/portraits/women/44.jpg"
@@ -60,7 +146,7 @@ export default {
 
         <!-- Testimonial 3 -->
         <div
-          class="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center text-center transform hover:scale-105 transition-all duration-300"
+          class="testimonial-card bg-white rounded-xl shadow-lg p-8 flex flex-col items-center text-center overflow-hidden"
         >
           <img
             src="https://randomuser.me/api/portraits/men/47.jpg"
