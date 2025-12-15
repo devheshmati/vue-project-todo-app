@@ -3,7 +3,11 @@
 import { RouterLink } from "vue-router";
 import { gsap } from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-gsap.registerPlugin(ScrollToPlugin);
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
+import { ref, onMounted } from "vue";
+
+gsap.registerPlugin(ScrollToPlugin, ScrollTrigger);
 
 const scrollTo = (selector) => {
   gsap.to(window, {
@@ -17,11 +21,205 @@ const scrollTo = (selector) => {
 defineOptions({
   name: "FooterComponent",
 });
+
+// get elements for animation
+const mainLogo = ref(null);
+const mainHeader = ref(null);
+const mainContext = ref(null);
+const col2Header = ref(null);
+const col2LinkList = ref(null);
+const col2LinkItems = ref([]);
+const col3Header = ref(null);
+const col3LinkList = ref(null);
+const col3LinkItems = ref([]);
+const col4Header = ref(null);
+const col4LinkList = ref(null);
+const col4LinkItems = ref([]);
+const copyrightContext = ref(null);
+const socialLink = ref(null);
+const socialLinkItems = ref([]);
+
+onMounted(() => {
+  col2LinkItems.value = col2LinkList.value.querySelectorAll("li");
+  col3LinkItems.value = col3LinkList.value.querySelectorAll("li");
+  col4LinkItems.value = col4LinkList.value.querySelectorAll("li");
+  socialLinkItems.value = socialLink.value.querySelectorAll("li");
+
+  // main header, logo and main context
+  const splitMainContext = SplitText.create(mainContext.value, {
+    type: "words, lines",
+    mask: "lines",
+  });
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: mainHeader.value,
+      start: "top 70%",
+      end: "bottom top",
+      toggleActions: "play none none reverse",
+    },
+  });
+
+  tl.from(mainLogo.value, {
+    xPercent: -50,
+    autoAlpha: 0,
+    ease: "expo.out",
+    duration: 1.4,
+  })
+    .from(
+      mainHeader.value,
+      {
+        yPercent: 50,
+        autoAlpha: 0,
+        ease: "expo.out",
+        duration: 1.4,
+      },
+      "-=1",
+    )
+    .from(
+      splitMainContext.lines,
+      {
+        yPercent: 50,
+        autoAlpha: 0,
+        ease: "expo.out",
+        duration: 3,
+        stagger: {
+          each: 0.1,
+        },
+      },
+      "-=1",
+    );
+  // col2
+  const tl2 = gsap.timeline({
+    scrollTrigger: {
+      trigger: col2Header.value,
+      start: "top 70%",
+      end: "bottom top",
+      toggleActions: "play none none reverse",
+    },
+  });
+
+  tl2
+    .from(col2Header.value, {
+      delay: 0.2,
+      yPercent: 50,
+      autoAlpha: 0,
+      ease: "expo.out",
+      duration: 1.4,
+    })
+    .from(
+      col2LinkItems.value,
+      {
+        autoAlpha: 0,
+        ease: "expo.out",
+        duration: 1.2,
+        stagger: {
+          each: 0.1,
+        },
+      },
+      "-=1",
+    );
+
+  // col3
+  const tl3 = gsap.timeline({
+    scrollTrigger: {
+      trigger: col3Header.value,
+      start: "top 70%",
+      end: "bottom top",
+      toggleActions: "play none none reverse",
+    },
+  });
+
+  tl3
+    .from(col3Header.value, {
+      delay: 0.4,
+      yPercent: 50,
+      autoAlpha: 0,
+      ease: "expo.out",
+      duration: 1.4,
+    })
+    .from(
+      col3LinkItems.value,
+      {
+        autoAlpha: 0,
+        ease: "expo.out",
+        duration: 1.2,
+        stagger: {
+          each: 0.1,
+        },
+      },
+      "-=1",
+    );
+
+  // col4
+  const tl4 = gsap.timeline({
+    scrollTrigger: {
+      trigger: col4Header.value,
+      start: "top 70%",
+      end: "bottom top",
+      toggleActions: "play none none reverse",
+    },
+  });
+
+  tl4
+    .from(col4Header.value, {
+      delay: 0.6,
+      yPercent: 50,
+      autoAlpha: 0,
+      ease: "expo.out",
+      duration: 1.4,
+    })
+    .from(
+      col4LinkItems.value,
+      {
+        autoAlpha: 0,
+        ease: "expo.out",
+        duration: 1.2,
+        stagger: {
+          each: 0.1,
+        },
+      },
+      "-=1",
+    );
+
+  // bottom section
+  gsap.from(copyrightContext.value, {
+    delay: 0.6,
+    yPercent: 50,
+    autoAlpha: 0,
+    ease: "expo.out",
+    duration: 1.4,
+    scrollTrigger: {
+      trigger: copyrightContext.value,
+      start: "top bottom",
+      end: "bottom top",
+      toggleActions: "play none none reverse",
+    },
+  });
+
+  gsap.from(socialLinkItems.value, {
+    delay: 0.6,
+    yPercent: 50,
+    autoAlpha: 0,
+    ease: "expo.out",
+    duration: 1.4,
+    stagger: {
+      each: 0.1,
+    },
+    scrollTrigger: {
+      trigger: socialLink.value,
+      start: "top bottom",
+      end: "bottom top",
+      toggleActions: "play none none reverse",
+    },
+  });
+});
 </script>
 
 <template>
   <div>
-    <footer class="bg-black/90 text-white px-6 sm:px-18 pb-4 pt-12">
+    <footer
+      class="bg-black/90 text-white px-6 sm:px-18 pb-4 pt-12 overflow-hidden"
+    >
       <!--Top Section-->
       <div class="grid grid-cols-2 gap-4 pb-12 sm:grid-cols-4">
         <!--col 1-->
@@ -33,25 +231,26 @@ defineOptions({
           >
             <span>
               <img
+                ref="mainLogo"
                 src="/logos/todo-logo.png"
                 alt="To-Do App Logo"
                 class="h-8 w-8"
               />
             </span>
-            <span class="text-xl font-bold">To-Do App</span>
+            <span ref="mainHeader" class="text-xl font-bold">To-Do App</span>
           </router-link>
           <!-- text -->
           <div>
-            <span class="text-gray-400 text-lg"
+            <span ref="mainContext" class="text-gray-400 text-lg"
               >Organize your life, achieve your goals.</span
             >
           </div>
         </div>
 
         <!--col 2-->
-        <div class="text-sm">
-          <h4 class="font-bold">APP</h4>
-          <ul class="mt-4 text-gray-300">
+        <div ref="col2" class="text-sm">
+          <h4 ref="col2Header" class="font-bold">APP</h4>
+          <ul ref="col2LinkList" class="mt-4 text-gray-300">
             <li class="py-1">
               <router-link :to="{ name: 'Dashboard' }">Dashboard</router-link>
             </li>
@@ -69,9 +268,9 @@ defineOptions({
         </div>
 
         <!--col 3-->
-        <div class="text-sm">
-          <h4 class="font-bold">COMPANY</h4>
-          <ul class="mt-4 text-gray-300">
+        <div ref="col3" class="text-sm">
+          <h4 ref="col3Header" class="font-bold">COMPANY</h4>
+          <ul ref="col3LinkList" class="mt-4 text-gray-300">
             <li class="py-1">
               <router-link :to="{ name: 'AboutUs' }">About Us</router-link>
             </li>
@@ -82,9 +281,9 @@ defineOptions({
         </div>
 
         <!--col 4-->
-        <div class="text-sm">
-          <h4 class="font-bold">LEGAL</h4>
-          <ul class="mt-4 text-gray-300">
+        <div ref="col4" class="text-sm">
+          <h4 ref="col4Header" class="font-bold">LEGAL</h4>
+          <ul ref="col4LinkList" class="mt-4 text-gray-300">
             <li class="py-1">
               <router-link :to="{ name: 'Dashboard' }"
                 >Privacy Plicy</router-link
@@ -101,18 +300,22 @@ defineOptions({
 
       <!--Bottom Section-->
       <div
+        ref="bottomSection"
         class="grid grid-cols-1 border-t-1 border-t-slate-600 pt-5 sm:grid-cols-2"
       >
         <!--col 1 copyright-->
         <div>
-          <span class="text-sm text-slate-400 block text-center sm:text-start">
+          <span
+            ref="copyrightContext"
+            class="text-sm text-slate-400 block text-center sm:text-start"
+          >
             &copy; To-Do App. All rights reserved.
           </span>
         </div>
 
         <!--col 2 social links-->
         <div>
-          <ul class="flex justify-center sm:justify-end gap-6">
+          <ul ref="socialLink" class="flex justify-center sm:justify-end gap-6">
             <li>
               <a
                 href="#"
