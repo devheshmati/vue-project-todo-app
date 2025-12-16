@@ -1,14 +1,33 @@
 <script setup>
-import { ref, computed, reactive } from "vue";
+import { ref, computed, reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import axios from "axios";
 import { useVuelidate } from "@vuelidate/core";
 import { required, sameAs, email, minLength } from "@vuelidate/validators"; // Added email and minLength
+import axios from "axios";
+import { gsap } from "gsap";
+import { SplitText } from "gsap/SplitText";
+
+gsap.registerPlugin(SplitText);
 
 // Define Options
 defineOptions({
   name: "RegisterPage",
 });
+
+// get elements for making animation for them
+const mainFrame = ref(null);
+const mainHeader = ref(null);
+const label1 = ref(null);
+const label2 = ref(null);
+const label3 = ref(null);
+const label4 = ref(null);
+const input1 = ref(null);
+const input2 = ref(null);
+const input3 = ref(null);
+const input4 = ref(null);
+const submitBtn = ref(null);
+const loginLink = ref(null);
+const homeLink = ref(null);
 
 const router = useRouter();
 
@@ -87,20 +106,105 @@ async function submitData() {
     isLoading.value = false;
   }
 }
+
+onMounted(() => {
+  // animation
+  const splitMainHeader = SplitText.create(mainHeader.value, {
+    type: "chars, words",
+    mask: "chars",
+  });
+  const tl = gsap.timeline();
+
+  tl.from(mainFrame.value, {
+    delay: 0.4,
+    autoAlpha: 0,
+    duration: 0.6,
+    ease: "power.out",
+  })
+    .from(splitMainHeader.chars, {
+      yPercent: 50,
+      autoAlpha: 0,
+      ease: "power.out",
+      stagger: {
+        amount: 0.8,
+        from: "random",
+      },
+    })
+    .from(
+      [label1.value, label2.value, label3.value, label4.value],
+      {
+        xPercent: -50,
+        autoAlpha: 0,
+        ease: "expo.out",
+        duration: 0.8,
+        stagger: {
+          each: 0.3,
+        },
+      },
+      "-=1.2",
+    )
+    .from(
+      [input1.value, input2.value, input3.value, input4.value],
+      {
+        yPercent: 50,
+        autoAlpha: 0,
+        ease: "expo.out",
+        duration: 2.2,
+        stagger: {
+          each: 0.3,
+        },
+      },
+      "-=0.6",
+    )
+    .from(
+      submitBtn.value,
+      {
+        scale: 1.3,
+        autoAlpha: 0,
+        ease: "expo.out",
+        duration: 1.5,
+      },
+      "-=1.8",
+    )
+    .from(
+      [loginLink.value, homeLink.value],
+      {
+        yPercent: 50,
+        autoAlpha: 0,
+        ease: "expo.out",
+        duration: 2,
+        stagger: {
+          each: 0.4,
+        },
+      },
+      "-=1.6",
+    );
+});
 </script>
 
 <template>
   <div class="min-h-screen flex items-center justify-center bg-gray-100">
-    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-      <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">
+    <div
+      ref="mainFrame"
+      class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md overflow-hidden"
+    >
+      <h2
+        ref="mainHeader"
+        class="text-2xl font-bold text-center text-gray-800 mb-6"
+      >
         Create Your Account
       </h2>
       <form @submit.prevent="handleRegister">
         <div class="mb-4">
-          <label for="name" class="block text-sm font-medium text-gray-700">
+          <label
+            ref="label1"
+            for="name"
+            class="block text-sm font-medium text-gray-700"
+          >
             Name
           </label>
           <input
+            ref="input1"
             type="text"
             id="name"
             v-model.trim="form.name"
@@ -119,10 +223,15 @@ async function submitData() {
           </div>
         </div>
         <div class="mb-4">
-          <label for="email" class="block text-sm font-medium text-gray-700">
+          <label
+            ref="label2"
+            for="email"
+            class="block text-sm font-medium text-gray-700"
+          >
             Email
           </label>
           <input
+            ref="input2"
             type="email"
             id="email"
             v-model.trim="form.email"
@@ -141,10 +250,15 @@ async function submitData() {
           </div>
         </div>
         <div class="mb-4">
-          <label for="password" class="block text-sm font-medium text-gray-700">
+          <label
+            ref="label3"
+            for="password"
+            class="block text-sm font-medium text-gray-700"
+          >
             Password
           </label>
           <input
+            ref="input3"
             type="password"
             id="password"
             v-model.trim="form.password"
@@ -164,12 +278,14 @@ async function submitData() {
         </div>
         <div class="mb-6">
           <label
+            ref="label4"
             for="confirm-password"
             class="block text-sm font-medium text-gray-700"
           >
             Confirm Password
           </label>
           <input
+            ref="input4"
             type="password"
             id="confirm-password"
             v-model.trim="form.confirmPassword"
@@ -191,20 +307,21 @@ async function submitData() {
           {{ errorMessage }}
         </p>
         <button
+          ref="submitBtn"
           type="submit"
-          class="w-full bg-cyan-600 text-white py-2 rounded-lg hover:bg-cyan-700 transition duration-300"
+          class="w-full bg-cyan-600 text-white py-2 rounded-lg hover:bg-cyan-700"
           :disabled="isLoading"
         >
           Sign Up
         </button>
       </form>
-      <p class="mt-4 text-center text-sm text-gray-600">
+      <p ref="loginLink" class="mt-4 text-center text-sm text-gray-600">
         Already have an account?
         <router-link to="/login" class="text-blue-500 hover:underline">
           Log In
         </router-link>
       </p>
-      <p class="mt-4 text-center text-sm text-gray-600">
+      <p ref="homeLink" class="mt-4 text-center text-sm text-gray-600">
         Go Home.
         <router-link to="/" class="text-blue-500 hover:underline">
           Home

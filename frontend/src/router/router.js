@@ -72,13 +72,26 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore();
-  if (to.meta.requiresAuth) {
-    await authStore.checkAuth();
+  await authStore.checkAuth();
 
+  // redirect from pages needed user login first
+  if (to.meta.requiresAuth) {
     if (!authStore.userToken) {
       return next({
         path: "/",
         query: { message: "You have not access! first logged in." },
+      });
+    }
+  }
+
+  // redirect from pages no need to be after login happend like register and login! user should first logout to show them.
+  if (to.path === "/login" || to.path === "/register") {
+    if (!authStore.userToken) {
+      return next();
+    } else {
+      return next({
+        path: "/",
+        query: { message: "You are logged in!" },
       });
     }
   }
