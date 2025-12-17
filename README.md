@@ -52,8 +52,8 @@ This project is a showcase of modern full-stack development skills:
 
 <div style="display: flex; align-items: flex-start; gap: 1.5rem; flex-wrap: wrap;">
   <!-- ستون چپ: دو عکس زیر هم -->
-    <img src="overview/images/landingpage.webp" alt="صفحه اصلی دسکتاپ" style="flex: 1; max-width: 100%; height: auto; border-radius: 8px;" />
-    <img src="overview/images/todolist.webp" alt="لیست وظایف" style="flex: 1;max-width: 100%; height: auto; border-radius: 8px;" />
+    <img src="overview/images/landingpage.webp" alt="صفحه اصلی دسکتاپ" style="flex: 1; max-width: 50%; height: auto; border-radius: 8px;" />
+    <img src="overview/images/todolist.webp" alt="لیست وظایف" style="flex: 1;max-width: 50%; height: auto; border-radius: 8px;" />
 </div>
 <div>
   <img src="overview/images/landingpage-mobile.webp" alt="صفحه اصلی موبایل" style="max-width: 100%; height: auto; border-radius: 8px;" />
