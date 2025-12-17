@@ -50,16 +50,15 @@ This project is a showcase of modern full-stack development skills:
 
 ### 🖼️ Showcase & Screenshots
 
-<div style="display: flex; align-items: flex-start; flex-wrap: wrap;">
-  <div width:"60%">
-    <img src="overview/images/landingpage.webp" alt="Main Page Overview" style="max-width: 100%; height: auto;" />
-    <img src="overview/images/todolist.webp" alt="Main Page Overview" style="max-width: 100%; height: auto;" />
+<div style="display: flex; align-items: flex-start; gap: 1.5rem; flex-wrap: wrap;">
+  <!-- ستون چپ: دو عکس زیر هم -->
+  <div style="display: flex; flex-direction: column; gap: 1rem;">
+    <img src="overview/images/landingpage.webp" alt="صفحه اصلی دسکتاپ" style="max-width: 100%; height: auto; border-radius: 8px;" />
+    <img src="overview/images/todolist.webp" alt="لیست وظایف" style="max-width: 100%; height: auto; border-radius: 8px;" />
   </div>
-  <div width:"40%">
-    <img src="overview/images/landingpage-mobile.webp" alt="Main Page Overview Mobile" style="max-width: 100%; height: auto;" />
+
+  <!-- ستون راست: یک عکس کنار اون دوتا -->
+  <div>
+    <img src="overview/images/landingpage-mobile.webp" alt="صفحه اصلی موبایل" style="max-width: 100%; height: auto; border-radius: 8px;" />
   </div>
 </div>
-
-#### Video 
-<video width="90%" controls src="overview/video/pro-todo-compress-for-web.mp4">
-</video>
