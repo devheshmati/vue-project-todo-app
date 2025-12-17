@@ -50,7 +50,14 @@ This project is a showcase of modern full-stack development skills:
 
 ### 🖼️ Showcase & Screenshots
 
-Main Page Overview [Main Page Overview](overview/images/landingpage.webp)
-Main Page Overview Mobile [Main Page Overview Mobile](overview/images/landingpage-mobile.webp)
-Dashboard Page Overview [Dashboard Page Overview](overview/images/todolist.webp)
-Video [Video](overview/video/pro-todo-compress-for-web.mp4)
+#### Main Page Overview 
+![Main Page Overview](overview/images/landingpage.webp)
+
+#### Main Page Overview Mobile 
+![Main Page Overview Mobile](overview/images/landingpage-mobile.webp)
+
+#### Dashboard Page Overview 
+![Dashboard Page Overview](overview/images/todolist.webp)
+
+#### Video 
+![Video](overview/video/pro-todo-compress-for-web.mp4)
