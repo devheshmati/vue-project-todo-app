@@ -50,16 +50,13 @@ This project is a showcase of modern full-stack development skills:
 
 ### 🖼️ Showcase & Screenshots
 
-<div style="display: flex; gap: 0.5rem;">
-  #### Main Page Overview 
-  ![Main Page Overview](overview/images/landingpage.webp)
-
-  #### Main Page Overview Mobile 
-  ![Main Page Overview Mobile](overview/images/landingpage-mobile.webp)
+<div style="display: flex; gap: 0.5rem; align-items: flex-start; flex-wrap: wrap;">
+  <img src="overview/images/landingpage.webp" alt="Main Page Overview" style="max-width: 100%; height: auto;" />
+  <img src="overview/images/landingpage-mobile.webp" alt="Main Page Overview Mobile" style="max-width: 100%; height: auto;" />
 </div>
 
 #### Dashboard Page Overview 
 ![Dashboard Page Overview](overview/images/todolist.webp)
 
 #### Video 
-![Video](overview/video/pro-todo-compress-for-web.mp4)
+![Overview Video](overview/video/pro-todo-compress-for-web.mp4)
