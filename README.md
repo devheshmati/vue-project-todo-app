@@ -50,7 +50,12 @@ This project is a showcase of modern full-stack development skills:
 
 ### 🖼️ Showcase & Screenshots
 
-<div style="display:flex;align-items:flex-start;">
+#### Main Page
+<div>
   <img width="100%" src="overview/images/landingpage.webp" alt="صفحه اصلی دسکتاپ" />
+</div>
+
+#### Dashboard Todo List page
+<div>
   <img width="100%" src="overview/images/todolist.webp" alt="لیست وظایف" />
 </div>
