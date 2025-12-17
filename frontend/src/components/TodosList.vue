@@ -206,7 +206,7 @@ watch(
 
     <div
       v-if="todoStore.errorMessage"
-      class="bg-red-800 text-white p-4 flex justify-between items-center"
+      class="bg-red-800 text-white p-4 flex justify-between items-center gap-2 mx-auto"
     >
       {{ todoStore.errorMessage }}
       <button

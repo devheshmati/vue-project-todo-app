@@ -1,26 +1,58 @@
 # 🚀 Pro-Todo: Full-Stack Task Manager (Vue.js, Laravel API & GSAP)
 
-> یک سیستم مدیریت وظایف جامع و امن با استفاده از استک **Vue.js**, **Laravel API** و **Tailwind CSS**. تجربه‌ی کاربری این پروژه با انیمیشن‌های پیشرفته‌ی **GSAP** و **ScrollTrigger** به سطحی فراتر از یک اپلیکیشن Todo ساده ارتقا یافته است.
+---
+
+### 📝 Project Overview
+
+This Pro-Todo application masterfully balances robust security and exceptional, yet inherently simple, user experience (UX), driven by advanced GSAP animation techniques.
+
+#### Backend & Security
+
+The backend is built upon **Laravel**, providing a powerful **RESTful API**. Security is prioritized using **Laravel Sanctum** for **token-based authentication**, ensuring that all task management operations (CRUD) are secure and tied strictly to the authenticated user.
+
+#### Frontend & Dynamic UX
+
+The frontend leverages **Vue.js 3** with ٰComposition API to deliver a fast and reactive Single Page Application (SPA).
+
+* **Tailwind CSS:** Used for a modern, utility-first design approach, resulting in a clean and highly responsive user interface.
+* **GSAP Magic:** To elevate the UX beyond typical To-Do applications, **GSAP (GreenSock Animation Platform)** is utilized:
+    * **SplitText & Transitions:** Enables smooth, micro-animations for task entry, status changes, and title displays, making the application feel fluid and professional.
+    * **ScrollTrigger:** (If used) Used to create dynamic, scroll-linked visual effects, further enhancing user engagement.
 
 ---
 
-### 📝 **Project Overview (خلاصه‌ی پروژه)**
+### 🌟 Key Features
 
-این پروژه، **Pro-Todo**، تلاشی برای ساخت یک اپلیکیشن مدیریت وظایف **Full-Stack** است که بر روی **امنیت (Security)** و **تجربه‌ی کاربری (UX) فوق‌العاده** تمرکز دارد.
-
-#### **Backend & Security (بخش پشتیبان و امنیت)**
-
-Backend پروژه بر پایه **Laravel** ساخته شده و یک **RESTful API** قوی را ارائه می‌دهد. ما از **Laravel Sanctum** برای مدیریت **احراز هویت مبتنی بر توکن API** استفاده کردیم تا اطمینان حاصل کنیم که تمام تعاملات کاربری (ایجاد، خواندن، به روزرسانی و حذف وظایف) کاملاً **امن** و مخصوص کاربر مربوطه باشد.
-
-#### **Frontend & Dynamic UX (بخش کاربری و UX داینامیک)**
-
-در بخش Frontend، **Vue.js 3** پلتفرم اصلی ما برای ساخت یک رابط کاربری واکنش‌گرا و سریع است.
-
-* **Tailwind CSS:** با استفاده از **Tailwind CSS**، استایلینگ پروژه به سرعت و با رویکرد **Utility-First** انجام شده و ظاهری مدرن و تمیز دارد.
-* **GSAP Magic:** برای متمایز کردن این پروژه از Todo List های سنتی، ما از کتابخانه‌ی **GSAP (GreenSock)** استفاده کرده‌ایم.
-    * **SplitText & Entrance Effects:** انیمیشن‌های ورود وظایف، حرکت بین صفحات و تغییر وضعیت (تکمیل شدن) وظایف، با استفاده از **SplitText** و سایر ماژول‌های GSAP، به نرمی و با جذابیت بصری بالایی اجرا می‌شوند.
-    * **ScrollTrigger:** (اگر استفاده کرده‌اید) برای افکت‌های بصری هنگام اسکرول کردن طولانی لیست، از **ScrollTrigger** استفاده شده تا تعامل کاربر با محتوا پویا باقی بماند.
-
-> **هدف نهایی:** نمایش توانایی در ادغام تکنولوژی‌های مدرن Full-Stack (Laravel + Vue) با ابزارهای حرفه‌ای انیمیشن (GSAP) برای خلق یک محصول کاربردی و چشم‌نواز.
+* **Comprehensive Task Management (CRUD):** Full functionality to Create, Read, Update, and Delete tasks.
+* **Task Status Toggle:** Seamlessly mark tasks as completed or pending.
+* **Secure User Authentication:** Robust sign-up and login features protected by **Laravel Sanctum**.
+* **Interactive Design:** Enhanced visual feedback and interaction using advanced GSAP animations.
+* **Fully Responsive:** Optimized UI for desktop, tablet, and mobile viewing.
+* **Efficient Task Sorting & Filtering:** Users can **sort** tasks (e.g., by creation date or status) and **filter** the list for enhanced productivity.
 
 ---
+
+### 🛠️ Technology Stack
+
+This project is a showcase of modern full-stack development skills:
+
+| Category | Technology | Purpose |
+| :--- | :--- | :--- |
+| **Frontend** | **Vue.js 3** | Main framework for the Single Page Application (SPA). |
+| **Styling** | **Tailwind CSS** | Utility-First framework for modern, highly responsive design. |
+| **Animation Core** | **GSAP (GreenSock)** | Professional library for high-performance, smooth animations. |
+| **Animation Modules** | **SplitText, ScrollTrigger** | Specialized modules for text and scroll-based effects. |
+| **Backend API** | **Laravel** | PHP Framework providing the robust RESTful API endpoints. |
+| **Authentication** | **Laravel Sanctum** | Lightweight system for token-based API authentication. |
+| **Database** | **MySQL** |
+
+---
+
+### 🖼️ Showcase & Screenshots
+
+| Description | Screenshot/GIF |
+| :--- | :--- |
+| **Main Page Overview** | [./overview/images/landingpage.webp] |
+| **Main Page Overview Mobile** | [./overview/images/landingpage-mobile.webp] |
+| **Dashboard Page Overview** | [./overview/images/todolist.webp] |
+| **Video** | [./overview/video/pro-todo-compress-for-web.mp4] |
