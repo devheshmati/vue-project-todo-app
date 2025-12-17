@@ -51,16 +51,15 @@ This project is a showcase of modern full-stack development skills:
 ### 🖼️ Showcase & Screenshots
 
 <div style="display: flex; align-items: flex-start; flex-wrap: wrap;">
-  <div style="width: 60%">
+  <div width:"60%">
     <img src="overview/images/landingpage.webp" alt="Main Page Overview" style="max-width: 100%; height: auto;" />
     <img src="overview/images/todolist.webp" alt="Main Page Overview" style="max-width: 100%; height: auto;" />
   </div>
-  <div style="width: 40%">
+  <div width:"40%">
     <img src="overview/images/landingpage-mobile.webp" alt="Main Page Overview Mobile" style="max-width: 100%; height: auto;" />
   </div>
 </div>
 
 #### Video 
-<video width="90%" controls>
-  <source src="overview/video/pro-todo-compress-for-web.mp4" type="video/mp4">
+<video width="90%" controls src="overview/video/pro-todo-compress-for-web.mp4">
 </video>
